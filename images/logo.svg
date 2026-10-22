@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 32" fill="none" width="220" height="32" font-family="'JetBrains Mono',ui-monospace,monospace">
+  <defs>
+    <linearGradient id="d0g" x1="0" y1="0" x2="220" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff3d9a"/><stop offset=".5" stop-color="#c06bff"/><stop offset="1" stop-color="#38e1ff"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(2,4)">
+    <path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z" stroke="url(#d0g)" stroke-width="1.7" stroke-linejoin="round"/>
+  </g>
+  <text x="34" y="22" font-size="19" font-weight="700" letter-spacing="1" fill="url(#d0g)">D0PAM1NE</text>
+</svg>

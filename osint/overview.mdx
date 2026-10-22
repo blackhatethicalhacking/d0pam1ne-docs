@@ -1,0 +1,25 @@
+---
+title: "OSINT"
+description: "Map the target's public exposure before you touch it."
+---
+
+**OSINT** maps what the target exposes on the wire. It is the stage below recon: emails, people, exposed host names, ASNs and email-security posture gathered from public sources, one stage at a time, filed into the OSINT area of Project Data.
+
+<Frame caption="The OSINT plan: ASN ranges, people, exposed assets, dorks and breach data">
+  <img src="/images/osint/osint-setup.png" alt="The OSINT plan: ASN ranges, people, exposed assets, dorks and breach data" />
+</Frame>
+
+## Stages
+
+- **ASN and ranges** — the client's autonomous-system numbers and IP ranges.
+- **People and emails** — names and email addresses tied to the domain.
+- **Exposed assets** — assets exposed on the public internet.
+- **Dorks and passive OSINT** — search-engine and passive discovery.
+- **Email security** — SPF, DMARC and DKIM posture.
+- **Breach and infostealer exposure** — credentials and infostealer logs tied to the client's domains.
+
+<Frame caption="OSINT running, streaming results">
+  <img src="/images/osint/osint-running.png" alt="OSINT running, streaming results" />
+</Frame>
+
+While it runs you see the live pipeline, items filed and output lines, exactly like recon and attacks. Everything stays in scope and nothing here touches a client host.

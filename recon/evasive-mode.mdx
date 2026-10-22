@@ -1,0 +1,20 @@
+---
+title: "Evasive Mode"
+description: "Adaptive pacing and Tor egress with exit-IP rotation, to stay quiet and avoid blocks."
+---
+
+**Evasive Mode** keeps recon and attacks quiet and resilient. It paces requests adaptively based on how the target responds, and can route egress through **Tor** with exit-IP rotation so a single address never draws attention or gets blocked.
+
+<Frame caption="Evasive Mode active during an automated attack, with live pacing">
+  <img src="/images/attacks/evasive-mode.png" alt="Evasive Mode active during an automated attack, with live pacing" />
+</Frame>
+
+## What it does
+
+- **Adaptive pacing** — speeds up when the target is healthy and backs off on signs of rate-limiting or blocking (429, 503), with a state machine that throttles, cools down and resumes.
+- **Tor egress** — routes supported tools through Tor and rotates the exit IP, so requests come from changing addresses.
+- **Intensity** — choose how aggressive the pacing is (quiet, balanced, aggressive) to trade speed for stealth.
+
+Evasive Mode is available in both Recon and the Attack pages. A badge shows when it is on, and the live run surfaces the current pacing state. Install the Tor and proxychains tools from the [Tools](/tools/overview) page to enable Tor egress.
+
+<Note>Not every tool can route through Tor. D0pam1ne only sends tools that support SOCKS egress through it, and keeps the rest direct, so a run never stalls on a tool that cannot proxy.</Note>

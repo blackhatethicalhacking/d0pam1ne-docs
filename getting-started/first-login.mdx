@@ -1,0 +1,26 @@
+---
+title: "First login"
+description: "Sign in, set your password and turn on two-step authentication."
+---
+
+On first run the installer writes an initial admin password to a file on the machine. Read it, sign in, then change the password and delete the file.
+
+```bash
+cat ~/.d0pam1ne-pro/initial_admin.txt
+```
+
+<Frame caption="The D0pam1ne Pro sign-in screen">
+  <img src="/images/getting-started/login.png" alt="The D0pam1ne Pro sign-in screen" />
+</Frame>
+
+## Steps
+
+<Steps>
+  <Step title="Open the app">Browse to `https://localhost:7331` (or your LAN address).</Step>
+  <Step title="Sign in">Use `admin` and the password from `initial_admin.txt`.</Step>
+  <Step title="Change your password">Go to Settings and set your own password, then delete the initial file.</Step>
+  <Step title="Turn on 2FA">Two-step login protects access over the network. Enrol an authenticator in your account settings.</Step>
+  <Step title="Set the company identity">The first admin is walked through onboarding to set the firm name, logo and house colours used on reports.</Step>
+</Steps>
+
+<Note>Every account can have its own password, sessions and CLI tokens, and roles decide who can run tools versus only read. See the Team page under Administration.</Note>

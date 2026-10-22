@@ -1,0 +1,47 @@
+---
+title: "Installation"
+description: "Install the D0pam1ne engine and D0pam1ne Pro on Kali or macOS."
+---
+
+D0pam1ne installs on **Kali Linux** and **macOS** with a single script. The installer sets up a Python virtualenv, the Node front-end build, the system libraries the PDF engine needs, and the recon and OSINT toolchain.
+
+## Requirements
+
+- Python 3.10 to 3.13
+- Node.js and npm
+- macOS (Homebrew) or Kali/Debian (apt)
+- Git
+
+## Install
+
+```bash
+git clone <your D0pam1ne Pro repo>
+cd D0pam1ne-Pro
+./install.sh
+```
+
+The installer picks the right package manager per OS (Homebrew on macOS, apt on Kali) and falls back to go, pip, cargo or git for individual tools. Python tools get their own virtualenvs so versions never clash.
+
+## Run it
+
+```bash
+./run.sh            # start in the background
+./run.sh status     # check it is up
+./run.sh logs       # tail the logs
+./run.sh restart    # restart after an update
+./run.sh stop       # stop it
+```
+
+By default D0pam1ne listens on `https://localhost:7331` and on your LAN address. Login and 2FA are required on every interface.
+
+<Warning>D0pam1ne is reachable on every network interface by default. Keep the port firewalled to addresses you trust, or set `D0P_HOST=127.0.0.1` in your env file for local-only access.</Warning>
+
+## Updating
+
+Pull the latest code and re-run the installer, then restart:
+
+```bash
+git pull && ./install.sh && ./run.sh restart
+```
+
+The in-app **Updates** page can also fast-forward both D0pam1ne Pro and the engine to the latest GitHub release for you.

@@ -1,72 +1,143 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "theme": "maple",
+  "name": "D0pam1ne",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#4cd964",
+    "light": "#4cd964",
+    "dark": "#0b1115"
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "pages": [
+    "tabs": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "introduction",
+              "getting-started/installation",
+              "getting-started/first-login",
+              "getting-started/the-guide"
+            ]
+          },
+          {
+            "group": "Core concepts",
+            "pages": [
+              "concepts/projects",
+              "concepts/command-center",
+              "concepts/scope"
+            ]
+          },
+          {
+            "group": "Recon",
+            "pages": [
+              "recon/overview",
+              "recon/running-recon",
+              "recon/evasive-mode"
+            ]
+          },
+          {
+            "group": "Project data",
+            "pages": [
+              "data/hosts-and-services",
+              "data/attack-surface",
+              "data/traffic",
+              "data/issues",
+              "data/out-of-scope"
+            ]
+          },
+          {
+            "group": "Attacks",
+            "pages": [
+              "attacks/manual-attacks",
+              "attacks/automated-attacks",
+              "attacks/attack-equalizer",
+              "attacks/evasive-mode"
+            ]
+          },
+          {
+            "group": "OSINT",
+            "pages": [
+              "osint/overview"
+            ]
+          },
+          {
+            "group": "Importing",
+            "pages": [
+              "import/import-scans"
+            ]
+          },
+          {
+            "group": "Reporting",
+            "pages": [
+              "reporting/report-builder",
+              "reporting/interactive-report",
+              "reporting/pdf-report",
+              "reporting/word-export",
+              "reporting/retest"
+            ]
+          },
+          {
+            "group": "AI",
+            "pages": [
+              "ai/local-ai",
+              "ai/ai-memory"
+            ]
+          },
+          {
+            "group": "Vulnerability intel",
+            "pages": [
+              "vuln-intel/overview"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "tools/overview",
+              "tools/wordlists"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "admin/team",
+              "admin/settings",
+              "admin/api-keys",
+              "admin/audit-log",
+              "admin/time-tracker",
+              "admin/backups",
+              "admin/resources",
+              "admin/updates"
+            ]
+          },
+          {
+            "group": "Extras",
+            "pages": [
+              "extras/playtime",
+              "extras/help-and-support"
+            ]
+          }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/images/logo.svg",
+    "dark": "/images/logo.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@mintlify.com"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Black Hat Ethical Hacking",
+      "href": "https://www.blackhatethicalhacking.com"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/BHEHofficial",
+      "website": "https://www.blackhatethicalhacking.com"
     }
   }
 }

@@ -1,0 +1,21 @@
+---
+title: "Recon overview"
+description: "Map the attack surface with a curated toolchain and adjustable pacing."
+---
+
+**Recon** maps what is live inside scope: subdomains and DNS, ports and services, live web, URLs and crawling, content and parameters, JavaScript and secrets. It runs the D0pam1ne engine against your scope and files everything into Project Data.
+
+<Frame caption="Recon profiles and scan settings">
+  <img src="/images/recon/recon-setup.png" alt="Recon profiles and scan settings" />
+</Frame>
+
+## Profiles
+
+Pick the profile that fits the engagement:
+
+- **Fast** — a quick look: live hosts, open ports, basic web. Small wordlists, short timeouts.
+- **Stealth** — quiet and slow, lower concurrency and gentler timing to stay under the radar.
+- **Normal** — the balanced default for most work.
+- **Deep** — the full coverage pass: larger wordlists, deeper crawling and resolution.
+
+Fine-tune the pacing under **Scan settings**, and turn on **Evasive Mode** for adaptive pacing and Tor egress (see [Evasive Mode](/recon/evasive-mode)).
