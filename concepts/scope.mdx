@@ -1,12 +1,41 @@
 ---
 title: "Client and scope"
-description: "Set what is in scope, and keep a clean record of what is not."
+description: "Set what is in scope with domains, wildcards, IPs, ranges and path-limited web rules. Out of scope always wins."
 ---
 
-Every project has a **client** and a **scope**. Recon and attacks only act inside scope, and anything you decide is out of scope is logged rather than lost.
+Every project has a **client** and a **scope**. The scope guard checks every host, name and URL against your rules before any tool touches it, and **out of scope always wins**. Anything seen outside scope is logged, never probed.
 
 <Frame caption="The Out of scope page keeps a clean record of what was excluded">
   <img src="/images/scope/out-of-scope.webp" alt="The Out of scope page keeps a clean record of what was excluded" />
 </Frame>
 
-Names, IPs and URLs that recon and imports turn up outside the scope land on the **Out of scope** page. They were seen, never probed. Add one to scope and the next run includes it; log it as an observation for the client, or ignore it. Logged observations can be included in the report.
+## Scope rule types
+
+| Rule | Matches |
+| --- | --- |
+| `example.com` | the exact domain (and `www.example.com`) |
+| `*.example.com` | any subdomain, and the apex |
+| `203.0.113.10` | a single IP |
+| `203.0.113.0/24` | a CIDR range |
+| `https://app.example.com/portal` | only URLs under `/portal` on that host (scheme + path) |
+| `app.example.com:8443/api/` | a path on one port, any scheme |
+
+A path can end with `*` for an explicit prefix match (`/api*` matches `/api`, `/api-v2`, `/api/x`).
+
+## Path-limited hosts
+
+A rule with a path or port is **limited**: the host is reachable for the web stages (its in-scope URLs are probed, crawled and screenshotted) but is **never port scanned**, and nothing outside the allowed path is ever requested. A crawler is constrained to the allowed URL patterns. This lets you test one application on a shared host without touching the rest.
+
+## How recon enforces it
+
+- Brute-force and permutation candidates under excluded names are never resolved.
+- Excluded IPs are subtracted from ranges before a mass port sweep.
+- A discovered name is followed from an IP only when every address it resolves to is an in-scope IP.
+- Wordlists are trimmed so excluded paths are never requested, and no tool follows a redirect out of scope.
+- An out-of-scope rule with a path removes only the URLs under that path.
+
+## Out of scope
+
+Names, IPs and URLs that turn up outside scope land on the **Out of scope** page: seen, never probed. For each you can add it to scope (the next run includes it), log it as an observation for the client, or ignore it. Logged observations can be included in the report.
+
+<Tip>Run `d0pam1ne project check <target>` to test whether a target is in scope before a run; it exits non-zero if the target is refused, and `d0pam1ne scope plan` explains what recon will do for each rule.</Tip>

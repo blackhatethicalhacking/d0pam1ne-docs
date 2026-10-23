@@ -1,12 +1,27 @@
 ---
 title: "Local AI"
-description: "AI that runs on your machine, with no cloud and no telemetry."
+description: "An on-device model run by Ollama. Triage, drafting and the assistant run locally: no cloud, no account, no telemetry."
 ---
 
-D0pam1ne's AI is a **local model** run by [Ollama](https://ollama.com) on your machine. Project data, your questions, drafts and reports never leave it: there is no cloud AI, no account and no telemetry, and D0pam1ne refuses any AI address that is not on this machine. Downloading a model is the only time Ollama goes online.
+D0pam1ne's AI is a **local model** run by [Ollama](https://ollama.com) on your machine. Project data, your questions, drafts and reports never leave it: there is no cloud AI, no account and no telemetry, and D0pam1ne refuses any AI endpoint that is not local. Downloading a model is the only time Ollama goes online.
 
 <Frame caption="AI settings: private by design, with recommended local models">
   <img src="/images/ai/ai-settings.webp" alt="AI settings: private by design, with recommended local models" />
 </Frame>
 
-The AI settings page recommends models for your available memory and shows what is installed. The AI powers issue triage, report drafting and the Ask AI assistant throughout the app.
+## Private by design
+
+The AI module is "text in, text out": it has no access to the scanners, the network (beyond the local Ollama) or the database. It only ever receives the read-only context the server assembles, and its output is stored as a **draft** you accept. The default model is `qwen3:14b`; the settings page recommends models for your available memory and manages what is installed.
+
+## What it does
+
+- **Triage** findings in Needs Review, with a suggested verdict and confidence.
+- **Draft** issue sections (description, risks, technical description, steps, recommendations) from the evidence.
+- **Explain** impact, remediation and severity, and write executive summaries.
+- **Answer** questions about the project through the Ask AI assistant.
+
+## What it will not do
+
+It never runs or plans attacks, writes exploits, or picks new targets. It states only facts that are in its context, quotes the project's real numbers rather than estimating, and never invents hosts, versions, payloads or CVEs. A verdict it suggests never changes a finding's status on its own; you accept it.
+
+<Note>Because the model stays loaded between questions and runs on your hardware, the first question after a cold start is slower while the model warms up. Thinking models answer chat without thinking and think only when drafting a report.</Note>

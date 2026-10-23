@@ -1,0 +1,33 @@
+---
+title: "API reference"
+description: "D0pam1ne Pro exposes a REST API behind your login. Browse the live OpenAPI docs, or see the areas below."
+---
+
+Everything the web console does, it does through D0pam1ne Pro's REST API, mounted under `/api` and protected by your login (bearer token) and project guard. The fastest way to explore it is the live, interactive docs on your own instance.
+
+<Card title="Live API docs" icon="code" href="/reference/api">
+  Open `/api/docs` on your running instance for the interactive OpenAPI explorer, and `/api/openapi.json` for the raw schema. `GET /api/health` is a public health check.
+</Card>
+
+## Areas
+
+| Area | Prefix | Highlights |
+| --- | --- | --- |
+| Projects | `/api/projects` | CRUD, members, activity, scan states |
+| Scans / recon | `/api` | `recon-plan`, start/stop/pause scans, schedule, output export |
+| Attack | `/api` | auto plan and run, per-category targets, runs, coverage |
+| OSINT | `/api` | plan and run stages, items, flagging |
+| Findings | `/api` | issues CRUD, AI accept, bulk status/assign, templates, CVSS suggest, attachments |
+| Reports | `/api/projects/{id}/report` | generate (`fmt=pdf|html|interactive|md|json|docx`), preview |
+| Data | `/api` | hosts, technologies, URLs, traffic, exports, purge |
+| AI | `/api` | status, models, ask + stream, triage, memory |
+| Tools | `/api/tools` | list, update, badge, job, wordlists |
+| Auth | `/api` | login, MFA, sessions, devices, users, invites, API tokens |
+| Admin | `/api` | audit, backups, archive, import |
+| System | `/api/system` | usage, update, compact |
+
+## Authentication
+
+Sign in to get a bearer token, then send it as `Authorization: Bearer <token>`. For scripts and integrations, create a dedicated API token in your account settings rather than reusing a session.
+
+<Note>The API is the same surface the web console uses, so anything you can do in the UI you can automate. Use the live `/api/docs` on your instance for exact request and response shapes, which always match your running version.</Note>

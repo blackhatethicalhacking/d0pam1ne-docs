@@ -1,0 +1,58 @@
+---
+title: "Cheat sheet"
+description: "The commands you reach for most, on one page."
+---
+
+## Engine
+
+```bash
+# Projects
+d0pam1ne project new --name "Acme" --in "*.acme.com" --in "203.0.113.0/24"
+d0pam1ne project use acme
+d0pam1ne project scope --in "api.acme.com" --remove "staging.acme.com"
+
+# Recon
+d0pam1ne recon --profile normal --yes
+d0pam1ne recon --profile deep --only subdomains,dns,ports,web --resume
+d0pam1ne pause
+d0pam1ne stop-tool feroxbuster
+
+# Results
+d0pam1ne results
+d0pam1ne report --open
+d0pam1ne attack injection       # target lists + tested commands (nothing runs)
+
+# Scope check
+d0pam1ne project check https://app.acme.com   # exit 3 if out of scope
+
+# Tools and system
+d0pam1ne doctor --missing
+d0pam1ne tools install --all
+d0pam1ne wordlists install
+d0pam1ne update --check
+```
+
+## Pro server
+
+```bash
+./install.sh                 # first-time setup (Kali / macOS)
+./run.sh start               # start in the background
+./run.sh status              # is it up?
+./run.sh logs                # tail logs
+./run.sh restart             # after an update
+./run.sh update --check      # see what's new
+./run.sh stop                # stop it
+```
+
+## First login
+
+```bash
+cat ~/.d0pam1ne-pro/initial_admin.txt   # first admin password
+# then: change it in Settings, delete the file, enable 2FA
+```
+
+## Install python-docx (Word export, Founder edition)
+
+```bash
+backend/.venv/bin/pip install "python-docx>=1.1" && ./run.sh restart
+```

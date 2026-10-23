@@ -1,0 +1,36 @@
+---
+title: "Attack categories"
+description: "Every attack category, the recon signal that puts it in the plan, and the tools it runs."
+---
+
+Attacks are organised into **categories**. Each category knows which recon signal justifies it and builds its own in-scope target lists, so the right tools run against the right hosts. [Manual Attacks](/attacks/manual-attacks) gives you each category's pre-filled commands to run by hand; [Automated Attacks](/attacks/automated-attacks) runs the installed, runnable ones for you, stage by stage.
+
+## The categories
+
+| Category | What it targets | Tools |
+| --- | --- | --- |
+| **Injection** | In-scope URLs with parameters (SQL, command, template, LFI, NoSQL) | sqlmap, ghauri, commix, sstimap, lfimap, nosqli, nuclei DAST |
+| **XSS** | Parameter URLs, verified in a headless browser | dalfox |
+| **Web scanners** | Every live site, broad coverage | nuclei, nikto, wapiti, vigolium, sn1per |
+| **CMS** | Fingerprinted WordPress, Drupal, Joomla | wpscan, droopescan |
+| **TLS** | Every TLS service: protocols, ciphers, known flaws | testssl.sh |
+| **Takeover** | In-scope names pointing at deleted cloud resources | subzy, nuclei (takeover) |
+| **Network** | Services beyond web: nmap vuln scripts, SSH, SNMP | nmap (vuln), ssh-audit, onesixtyone |
+| **Smuggling and cache** | Request smuggling and cache poisoning on live sites | smuggler, h2csmuggler, wcvs |
+| **API, GraphQL and JWT** | GraphQL endpoints, API specs, JWTs from recon | graphw00f, graphql-cop, nuclei, jwt_tool |
+| **Redirect, CRLF, CORS, headers** | Open redirects, CRLF, CORS, host-header injection | crlfuzz, corsy, oralyzer, headerpwn, nuclei |
+| **Cloud** | Storage and cloud resources named after the client | s3scanner, cloud_enum |
+| **Admin panels** | Hidden admin and login panels on live sites | adminpbuster |
+| **Deep content discovery** | Large wordlists and recursion on live sites | feroxbuster, ffuf |
+| **Logins** | Default and weak credentials on login services and pages | nuclei (default-login) |
+| **Metasploit** | Hosts and services loaded into an MSF workspace | msfconsole |
+
+## How targets are built
+
+Each category reads the recon data that matters to it. Injection and XSS take the URLs that have parameters; TLS takes every TLS service; Takeover takes hostnames with dangling DNS; Cloud takes buckets named after the client; CMS takes hosts fingerprinted as a CMS. You are never pointing tools at the whole surface, only at the parts where that class of issue can exist.
+
+## Intrusive tools and safety
+
+Tools that send real payloads (sqlmap, ghauri, commix, dalfox, wpscan, crlfuzz, the nuclei DAST pass and others) are **intrusive** and gated behind an explicit opt-in. Without it, Automated Attacks runs only the safe, non-intrusive checks. `jwt_tool` works offline by default, and Metasploit is always run by hand.
+
+<Warning>Only run attacks against systems you are authorized to test. Intrusive tools send live payloads and can change state on the target. Keep Evasive Mode on for sensitive engagements.</Warning>

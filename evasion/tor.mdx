@@ -1,0 +1,42 @@
+---
+title: "Tor egress and exit rotation"
+description: "Route supported tools through Tor with a rotating exit IP, while payload tools stay direct and paced. How and why."
+---
+
+Evasive Mode can route traffic through **Tor** so requests arrive from changing exit IPs, and no single address draws attention or collects a block. It does this without fragile command rewriting, and it is deliberate about which tools it sends through Tor.
+
+## Which tools route through Tor
+
+Only tools that speak SOCKS natively are sent through Tor. These are the Go scanners and curl:
+
+```
+nuclei  httpx  katana  naabu  dnsx  ffuf  gobuster
+feroxbuster  crlfuzz  headerpwn  s3scanner  wcvs  curl
+```
+
+For these, Evasive Mode adds the tool's own SOCKS flag (for example `httpx -proxy socks5://127.0.0.1:9050`) or sets the standard proxy environment variables. No command injection, no wrappers.
+
+## Why payload tools stay direct
+
+Injection and payload tools (sqlmap, ghauri, commix, sstimap, lfimap, nosqli and friends) are built on Python's `requests`, which needs an extra package for SOCKS and otherwise throws an error on every request, flooding and hanging the run. Tor is also impractically slow for payload work and its exits are frequently blocked. So these tools stay **direct**, but they are still **paced** by the same adaptive model. You get evasion where it helps and reliability where Tor would hurt.
+
+<Note>D0pam1ne uses each tool's native SOCKS support, not proxychains. proxychains injects a library at load time, which crashes some tools on Apple Silicon, so it is deliberately avoided.</Note>
+
+## Exit-IP rotation
+
+When a tool is routed through Tor, D0pam1ne asks Tor for a fresh circuit (a `NEWNYM` signal on the control port), so the next tool goes out through a different exit IP. Tor rate-limits circuit changes internally, so this is safe to request often. If the control port is not available, the lane keeps a fixed exit rather than failing.
+
+## Setting it up
+
+Install the Tor and proxychains tools from the [Tools](/tools/overview) page (category **Attack · Evasion (Tor)**). D0pam1ne lays down a dedicated Tor config with SOCKS on `9050` and a control port on `9051`, and a launcher so the control port accepts the rotation signal.
+
+## Under the hood
+
+Two environment variables tie recon and Pro together:
+
+| Variable | Set when | Effect |
+| --- | --- | --- |
+| `D0PAM1NE_EVASION` | Evasive Mode on | Intensity (`quiet`, `balanced`, `aggressive`) for the engine's recon pacing |
+| `D0PAM1NE_TOR_SOCKS` | Tor is up | `127.0.0.1:9050`; tells the engine to add `-proxy` to its Go HTTP tools only |
+
+Recon never sets a global proxy, because that would break the Python tools; it routes only the Go HTTP tools through Tor and keeps the rest direct.

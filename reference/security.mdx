@@ -1,0 +1,29 @@
+---
+title: "Security and safe use"
+description: "Run D0pam1ne safely: authorized testing only, locked down access, and data that never leaves your machine."
+---
+
+D0pam1ne is an offensive-security tool. Used well it is safe and private; used carelessly it can expose your instance or touch systems you are not allowed to test. Read this before you deploy.
+
+## Authorized testing only
+
+<Warning>Only scan and attack systems you have explicit, written authorization to test. The intrusive attack tools send real payloads and can change state on a target. The scope guard enforces your in-scope and out-of-scope rules on every request, but it is not a substitute for permission.</Warning>
+
+## Lock down access
+
+- D0pam1ne Pro binds to every interface by default (`D0P_HOST=0.0.0.0`) so you can reach it on your LAN. **Firewall the port** to addresses you trust, or set `D0P_HOST=127.0.0.1` for local-only.
+- **Require 2FA** for every account. Login and two-step are enforced on every network interface.
+- Change the first-run admin password and delete `initial_admin.txt`.
+- Keep the instance behind a VPN or a trusted network; do not expose it to the public internet.
+
+## Your data stays yours
+
+- The **AI is local**: an on-device Ollama model. D0pam1ne refuses any non-local AI endpoint, so project data, questions, drafts and reports never reach a cloud service.
+- **Backups are encrypted** and passphrase-locked; without the passphrase the file cannot be opened.
+- Secrets found during recon (in JavaScript, for example) are **masked and never validated** against the provider.
+
+## Scope is enforced, out-of-scope always wins
+
+The scope guard checks every host, name and URL against your rules. An out-of-scope rule always beats an in-scope one. A path-limited host is only ever crawled and probed within its allowed URLs and is never port scanned. Anything seen outside scope is logged, never probed.
+
+<Note>Keep [Evasive Mode](/evasion/overview) on for sensitive engagements: it paces to what each host tolerates and backs off before it trips a WAF or degrades the target.</Note>

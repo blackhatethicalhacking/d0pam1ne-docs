@@ -1,0 +1,45 @@
+---
+title: "Evasive Mode"
+description: "Adaptive, per-host pacing that reacts to how the target responds, with optional Tor egress and exit-IP rotation. Our standout, not a fixed delay."
+---
+
+Most tools let you set a delay and hope. **Evasive Mode** is different: it watches how each host responds and adjusts in real time, speeding up when the target is healthy and backing off the moment it sees rate-limiting or blocking, per host, with an optional Tor lane that rotates your exit IP. It is strictly additive and **off by default**; a project opts in.
+
+<Frame caption="Evasive Mode active on an automated attack, with the live pacing state">
+  <img src="/images/evasion/overview.webp" alt="Evasive Mode running" />
+</Frame>
+
+## Why it matters
+
+A fixed delay is a guess: too slow and you waste the window, too fast and you get blocked or, worse, knock the target over. Evasive Mode replaces the guess with a feedback loop. It reads the signals a target actually gives off (429s, 503s, challenge pages, latency climbing) and paces each host to the fastest rate that host will tolerate, then eases off before it trips a WAF.
+
+## Intensities
+
+One setting picks how hard it pushes. Each intensity is a full pacing profile, not just a speed dial.
+
+<CardGroup cols={3}>
+  <Card title="Quiet" icon="feather">
+    Low and slow. Starts at ~1.5 req/s, ramps gently, backs off hard, cools down for longer, and reaches for Tor early. For sensitive targets.
+  </Card>
+  <Card title="Balanced" icon="scale-balanced">
+    The default. Starts at ~8 req/s up to a ceiling of 30, sensible back-off and cooldowns. The right call for most engagements.
+  </Card>
+  <Card title="Aggressive" icon="gauge-high">
+    Flat out. Starts at ~20 req/s up to 50, tolerates more pushback before backing off, short cooldowns. For permissive targets and tight windows.
+  </Card>
+</CardGroup>
+
+## Where it applies
+
+Evasive Mode works in both [Recon](/recon/overview) and the [Attack](/attacks/automated-attacks) pages. A badge shows when it is on and at what intensity, and the live run surfaces the current pacing state per host (normal, throttling, blocked, cooling down, resuming). It scales a profile's pacing down without touching its coverage, so a run gets quieter and gentler, never shallower.
+
+<CardGroup cols={2}>
+  <Card title="How the pacing works" icon="wave-square" href="/evasion/pacing">
+    The per-host sensor, the state machine, and the additive-increase, multiplicative-decrease model that drives the rate.
+  </Card>
+  <Card title="Tor egress and exit rotation" icon="user-secret" href="/evasion/tor">
+    How supported tools route through Tor, how the exit IP rotates, and why payload tools stay direct.
+  </Card>
+</CardGroup>
+
+<Note>Evasive Mode is additive and off by default. Turning it off returns every tool to its normal, direct pacing. It never makes a run less thorough, only quieter.</Note>

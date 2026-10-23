@@ -1,25 +1,40 @@
 ---
 title: "OSINT"
-description: "Map the target's public exposure before you touch it."
+description: "Map the target's public exposure before you touch it: ASNs, people, exposed assets, dorks, email security, and breach data, stage by stage."
 ---
 
-**OSINT** maps what the target exposes on the wire. It is the stage below recon: emails, people, exposed host names, ASNs and email-security posture gathered from public sources, one stage at a time, filed into the OSINT area of Project Data.
+**OSINT** maps what the target exposes to the world, before any active testing. It is the stage below recon: autonomous systems, people and emails, assets exposed on the internet, search-engine dorks, email-security posture, and breach and infostealer data, gathered from public sources and filed into the OSINT area of Project Data. Everything stays in scope and nothing here touches a client host.
 
-<Frame caption="The OSINT plan: ASN ranges, people, exposed assets, dorks and breach data">
-  <img src="/images/osint/osint-setup.webp" alt="The OSINT plan: ASN ranges, people, exposed assets, dorks and breach data" />
+<Frame caption="The OSINT plan: stages, tools and what each needs">
+  <img src="/images/osint/osint-setup.webp" alt="The OSINT plan: stages, tools and what each needs" />
 </Frame>
 
-## Stages
+## The stages
 
-- **ASN and ranges** — the client's autonomous-system numbers and IP ranges.
-- **People and emails** — names and email addresses tied to the domain.
-- **Exposed assets** — assets exposed on the public internet.
-- **Dorks and passive OSINT** — search-engine and passive discovery.
-- **Email security** — SPF, DMARC and DKIM posture.
-- **Breach and infostealer exposure** — credentials and infostealer logs tied to the client's domains.
+Each stage runs only if its tool is installed (or runs in-process), and lists itself as skipped otherwise.
+
+| Stage | What it finds | Tool | Needs |
+| --- | --- | --- | --- |
+| **ASN and ranges** | The client's autonomous systems and owned IP ranges | asnmap | free PDCP key |
+| **People and emails** | Emails, names and hostnames across public sources | theHarvester | nothing |
+| **Subdomains from code** | Hostnames leaked in public GitHub code | github-subdomains | `GITHUB_TOKEN` |
+| **Exposed assets** | Hosts, IPs and services exposed on the internet | uncover | one of Shodan / Censys / FOFA / ZoomEye |
+| **Dorks and passive OSINT** | Search-engine dorks and passive discovery | d0rkerr3con (BHEH) | nothing |
+| **Email security** | SPF, DMARC and DKIM posture over DNS | in-process | nothing |
+| **Breach and infostealer exposure** | Machines and credentials in infostealer logs, per-email exposure | Hudson Rock Cavalier, holehe, optional HIBP | nothing (HIBP key optional) |
 
 <Frame caption="OSINT running, streaming results">
   <img src="/images/osint/osint-running.webp" alt="OSINT running, streaming results" />
 </Frame>
 
-While it runs you see the live pipeline, items filed and output lines, exactly like recon and attacks. Everything stays in scope and nothing here touches a client host.
+## Private and keyless where it counts
+
+- **Email security** runs entirely in-process over DNS: nothing leaves your machine.
+- **Breach and infostealer** exposure uses Hudson Rock's keyless Cavalier API and `holehe`; leaked passwords and logins are **never stored**.
+- The **people and emails** stage queries long-standing public sources only.
+
+## Running it
+
+Start OSINT and the pipeline runs stage by stage, streaming items filed and output lines, exactly like recon and attacks. Results land in Project Data's OSINT tab, where you can flag items and carry them into a report.
+
+<Note>OSINT is a Pro feature and works from your in-scope domains. Add the optional API keys under [Settings](/admin/api-keys) to reach more sources; without them, the keyless stages still run.</Note>

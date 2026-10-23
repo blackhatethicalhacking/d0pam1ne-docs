@@ -1,0 +1,100 @@
+---
+title: "CLI reference"
+description: "Every d0pam1ne command and flag: recon, attack, projects, scope, tools, wordlists and diagnostics."
+---
+
+The engine is driven by the `d0pam1ne` command. Run it with no arguments for the interactive console, or use the subcommands below. Global flags: `--no-banner`, `--version` / `-V`, `-h` / `--help`.
+
+## Recon
+
+Run the recon pipeline on the current project.
+
+```bash
+d0pam1ne recon [--profile fast|stealth|normal|deep] [--only STAGES] [--skip STAGES] [--resume] [--yes]
+```
+
+<ParamField path="--project SLUG">Project to run (default: the current project).</ParamField>
+<ParamField path="--profile" default="normal">Pacing profile: `fast`, `stealth`, `normal` or `deep`. See [profiles](/engine/profiles).</ParamField>
+<ParamField path="--only STAGES">Comma-separated stages to run, from `subdomains,active,dns,ports,pivot,services,web,waf,tls,fingerprint,screenshots,urls,content,params,js`.</ParamField>
+<ParamField path="--skip STAGES">Comma-separated stages to skip.</ParamField>
+<ParamField path="--resume">Continue the last unfinished run.</ParamField>
+<ParamField path="--yes / -y">Confirm authorization without being asked.</ParamField>
+<ParamField path="--plain">Plain line output instead of the live screen.</ParamField>
+<ParamField path="--nmap-options STR">nmap options for this run, e.g. `"-sS -sV -sC -O -A -Pn"`.</ParamField>
+<ParamField path="--protocols tcp|udp|both">nmap TCP, UDP or both (UDP needs privileges).</ParamField>
+
+```bash
+# A quick, authorized run of just the surface
+d0pam1ne recon --profile fast --only subdomains,dns,ports,web --yes
+
+# Resume an interrupted deep run
+d0pam1ne recon --profile deep --resume
+```
+
+## Control a running recon
+
+<CodeGroup>
+```bash Pause
+# Wind down the tools running now; resume with recon --resume
+d0pam1ne pause
+```
+```bash Stop one tool
+# Stop a single tool (or "all"); the run carries on with what it found
+d0pam1ne stop-tool feroxbuster
+```
+</CodeGroup>
+
+## Results and reporting
+
+```bash
+d0pam1ne results [--run ID]        # show the results of the last (or a given) run
+d0pam1ne report  [--run ID] [--open]   # one-page HTML summary, saved in the run folder
+d0pam1ne attack  [category]        # in-scope target lists and tested commands (nothing runs)
+```
+
+## Projects
+
+```bash
+d0pam1ne project new --name "Acme" --client "Acme Inc" --in "*.acme.com" --in "203.0.113.0/24"
+d0pam1ne project list
+d0pam1ne project use acme
+d0pam1ne project show
+d0pam1ne project scope --in "api.acme.com" --remove "staging.acme.com"
+d0pam1ne project nmap --preset aggressive --protocols both
+d0pam1ne project settings --set naabu.ports=full --set katana.depth=3
+d0pam1ne project check https://app.acme.com   # is this target in scope? (exit 3 if not)
+```
+
+<ParamField path="project settings --set TOOL.KEY=VALUE">Override one tool's behavior for this project, e.g. `naabu.ports=full`, `gau.enabled=off`. Repeatable. `--reset TOOL` (or `all`) clears overrides.</ParamField>
+<ParamField path="project nmap --preset">`aggressive`, `standard`, `light` or `thorough`, or pass raw `--options "..."`.</ParamField>
+
+## Scope
+
+```bash
+# What recon will do for each rule, before a run
+d0pam1ne scope plan --in "*.acme.com" --out "staging.acme.com" --json
+```
+
+## Tools and wordlists
+
+```bash
+d0pam1ne doctor [--missing] [--nmap] [--json]   # check tools and system
+d0pam1ne tools list
+d0pam1ne tools install --core      # the default pipeline
+d0pam1ne tools install --all       # recon, OSINT and attack
+d0pam1ne tools install --attack    # just the attack set
+d0pam1ne tools update
+d0pam1ne wordlists status
+d0pam1ne wordlists install [--full]   # SecLists (core folders, or ~2 GB full)
+d0pam1ne update [--check]          # update the engine itself from GitHub
+```
+
+## Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| 0 | Success |
+| 2 | Usage or input error |
+| 3 | Scope check failed (`project check`) |
+| 130 | Interrupted (Ctrl-C) |
+| 1 | General failure |

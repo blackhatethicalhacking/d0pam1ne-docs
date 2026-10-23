@@ -1,0 +1,56 @@
+---
+title: "Configuration"
+description: "Environment variables, run.sh commands and editions for D0pam1ne Pro."
+---
+
+D0pam1ne Pro reads its configuration from environment variables, persisted in an `env` file under the data directory (`~/.d0pam1ne-pro/env`). Most deployments only ever set the host and port.
+
+## Common variables
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `D0P_HOST` | `0.0.0.0` | Interface to bind. Set `127.0.0.1` for local-only. |
+| `D0P_PORT` | `7331` | Port to listen on. |
+| `D0P_DATA_DIR` | `~/.d0pam1ne-pro` | Data directory: database, secrets, TLS, artifacts, logs. |
+| `D0P_DB_URL` | `sqlite:///<data>/d0pam1ne.db` | Database URL. |
+| `D0P_SESSION_HOURS` | `12` | Login session lifetime. |
+| `D0P_ADMIN_USER` | `admin` | First-run admin username. |
+| `D0P_ADMIN_PASSWORD` | generated | First-run admin password (written to `initial_admin.txt` if unset). |
+| `D0P_SEED_DEMO` | on | Seed demo data on first run (`0` to disable). |
+| `D0P_MAX_UPLOAD_MB` | `50` | Maximum import/upload size. |
+
+## AI variables
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `D0P_OLLAMA_URL` | `http://127.0.0.1:11434` | Local Ollama endpoint. Must be a local address. |
+| `D0P_OLLAMA_MODEL` | `qwen3:14b` | Default local model. |
+
+The AI only ever talks to a local Ollama; D0pam1ne refuses any non-local AI address so project data never reaches a cloud model.
+
+## Engine variables
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `D0P_ENGINE` | auto-found | Path to the `d0pam1ne` engine CLI. |
+| `D0P_ENGINE_HOME` | `~/.d0pam1ne` | Engine data directory (runs, artifacts). |
+| `D0P_SECLISTS` | auto-found | SecLists location for the engine. |
+
+## run.sh
+
+```bash
+./run.sh            # run in the foreground
+./run.sh start      # start in the background
+./run.sh status     # is it up?
+./run.sh logs       # tail the logs
+./run.sh restart    # restart (after an update)
+./run.sh stop       # stop it (and any Ollama it started)
+./run.sh update     # fast-forward to the latest release  (--check to look only)
+./run.sh dev        # API with reload + the Vite dev server
+```
+
+## Editions
+
+D0pam1ne Pro ships as the **Standard** build and a **Founder Edition** (Black Hat Ethical Hacking's in-house build). Founder Edition unlocks the private BHEH report templates (BHEH Complete, BHEH Overview), Word (.docx) export and the Founder console branding.
+
+<Note>Founder Edition is gated by a signed key that lives only in the in-house repository and is excluded from distributed builds, so it cannot be enabled on a client build even by setting the edition flag.</Note>

@@ -1,0 +1,71 @@
+---
+title: "Recon profiles"
+description: "Fast, stealth, normal and deep: one choice sets the pacing, concurrency, wordlist sizes and time limits for the whole run."
+---
+
+A **profile** sets the run-wide pacing: how many ports, how fast, how deep the crawl, how large the wordlists and how long each tool may run. Pick one with `--profile` (the default is `normal`).
+
+```bash
+d0pam1ne recon --profile stealth
+```
+
+## The four profiles
+
+<CardGroup cols={2}>
+  <Card title="Fast" icon="bolt">
+    A quick first look: top 100 ports, small wordlists, no permutations, short time limits. For a rapid sense of the surface.
+  </Card>
+  <Card title="Stealth" icon="user-ninja">
+    Passive sources first, top 100 ports, small wordlists and low rates. The quietest profile, for staying under the radar.
+  </Card>
+  <Card title="Normal" icon="gauge">
+    Top 1000 ports, medium wordlists and sensible rates. The balanced default for client work.
+  </Card>
+  <Card title="Deep" icon="layer-group">
+    The most coverage: all 65535 ports, large wordlists, deeper crawling and recursion, longer limits and moderate rates. The longest profile.
+  </Card>
+</CardGroup>
+
+## What each profile sets
+
+Every profile sets the same knobs to different values. The most important:
+
+| Knob | Fast | Stealth | Normal | Deep |
+| --- | --- | --- | --- | --- |
+| Ports scanned | top 100 | top 100 | top 1000 | all 65535 |
+| naabu rate / concurrency | 1000 / 50 | 100 / 10 | 500 / 25 | 1000 / 50 |
+| DNS resolve rate | 300 | 50 | 300 | 1000 |
+| HTTP threads / rate | 50 / 100 | 10 / 10 | 25 / 40 | 40 / 80 |
+| Crawl depth (katana) | 1 | 1 | 2 | 4 |
+| Crawl time per host | 2m | 2m | 5m | 20m |
+| nuclei rate / concurrency | 100 / 25 | 10 / 5 | 40 / 10 | 80 / 20 |
+| nmap timing / parallel | T4 / 6 | T3 / 1 | T4 / 3 | T4 / 4 |
+| Permutations (alterx) | off | off | on (20k) | on (200k) |
+| DNS / content wordlists | small | small | medium | large |
+| Content: sites / minutes / depth | 5 / 2 / 1 | 5 / 3 / 1 | 25 / 10 / 2 | 100 / 30 / 4 |
+| Parameters: URLs / minutes | 10 / 5 | 10 / 10 | 40 / 20 | 150 / 60 |
+| JS files fetched | 50 | 50 | 300 | 1000 |
+| Per-tool timeout | 15m | 30m | 1h | 3h |
+
+## Profiles and tool settings
+
+A profile sets the run-wide pacing; per-project **tool settings** override individual tools. The two are merged for each run, so you can run `normal` but, say, scan all ports on one project:
+
+```bash
+d0pam1ne project settings --set naabu.ports=full --set katana.depth=3
+d0pam1ne project settings --set gau.enabled=off
+```
+
+## Profiles and Evasive Mode
+
+[Evasive Mode](/evasion/overview) scales a profile's **pacing** knobs down without touching its **coverage**. Three intensities multiply the rate and concurrency knobs:
+
+| Intensity | Factor |
+| --- | --- |
+| Quiet | x0.2 |
+| Balanced | x0.5 |
+| Aggressive | x0.8 |
+
+Coverage knobs (ports, crawl depth, wordlist sizes, time budgets) are left alone, and the per-tool timeout is doubled to give the slower pace room. So Evasive Mode makes a run quieter and gentler, not shallower.
+
+<Note>Fingerprinting in recon is detection only: nuclei runs technology, SSL and DNS templates at info severity. CVE and DAST templates run in the [attack phase](/attacks/automated-attacks), never during recon.</Note>

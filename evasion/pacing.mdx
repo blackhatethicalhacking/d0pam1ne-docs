@@ -1,0 +1,55 @@
+---
+title: "Adaptive pacing"
+description: "A per-host sensor, a state machine and an AIMD rate model: how Evasive Mode reads a target and paces to the fastest rate it will tolerate."
+---
+
+Evasive Mode paces **per host**. Each host gets its own sensor and controller, so a strict host is slowed without dragging down a permissive one.
+
+## The sensor
+
+A sliding window of recent observations (status codes, latency, challenge and reset signals) produces one of three readings:
+
+| Signal | When | Response |
+| --- | --- | --- |
+| **clean** | Few or no blocks, latency normal | Speed up |
+| **straining** | Block share rising, or latency climbing past a multiple of the baseline | Hold rate, switch identity |
+| **blocked** | Block share over threshold | Back off and cool down |
+
+Only **429 (Too Many Requests)** and **503 (Service Unavailable)** count as blocks. Ordinary answers like 401, 403, 404 or 405 are treated as clean samples, so per-URL results never falsely trip the brakes. Challenge pages ("just a moment", "attention required", CAPTCHA, Cloudflare) and connection resets also register as blocks.
+
+## The state machine
+
+Each host moves through states as its signals change:
+
+<Steps>
+  <Step title="Normal">
+    Healthy. The rate climbs on every clean interval (additive increase).
+  </Step>
+  <Step title="Throttle">
+    Straining. The rate holds and the client identity (User-Agent) switches to a browser string.
+  </Step>
+  <Step title="Blocked, then Cooldown">
+    A block triggers a multiplicative back-off (rate is halved, down to a floor), the egress lane escalates (direct to Tor), and the host pauses for a cooldown window.
+  </Step>
+  <Step title="Resume">
+    After the cooldown, the host resumes at its rate floor and ramps back up only after several clean intervals in a row.
+  </Step>
+  <Step title="Parked">
+    If a host blocks repeatedly (several cooldown cycles), it is parked: it keeps running at the floor rate rather than being abandoned, so the engagement still makes progress.
+  </Step>
+</Steps>
+
+## The rate model (AIMD)
+
+The rate follows **additive increase, multiplicative decrease**, the same principle that keeps TCP stable:
+
+- **Clean interval:** `rate = min(rate + step, ceiling)` — climb gently.
+- **Block:** `rate = max(rate x backoff, floor)` — drop sharply (balanced halves it).
+
+The exact start, step, ceiling, floor, back-off and cooldown values come from the chosen [intensity](/evasion/overview#intensities). Balanced, for example, starts at 8 req/s, steps by 2, ceils at 30, floors at 1 and halves on a block.
+
+## Honoring Retry-After
+
+If a target sends an explicit `Retry-After`, Evasive Mode honors it, but caps the wait at **180 seconds** so a hostile or misconfigured header can never stall the run indefinitely.
+
+<Tip>Because pacing is per host and additive, a single strict endpoint slows only itself. The rest of the surface keeps moving at the fastest rate each host allows.</Tip>

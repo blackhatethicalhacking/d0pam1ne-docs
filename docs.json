@@ -25,17 +25,33 @@
           {
             "group": "Core concepts",
             "pages": [
-              "concepts/projects",
               "concepts/command-center",
+              "concepts/projects",
               "concepts/scope"
+            ]
+          },
+          {
+            "group": "The engine",
+            "pages": [
+              "engine/overview",
+              "engine/recon-pipeline",
+              "engine/profiles",
+              "engine/cli-reference"
             ]
           },
           {
             "group": "Recon",
             "pages": [
               "recon/overview",
-              "recon/running-recon",
-              "recon/evasive-mode"
+              "recon/running-recon"
+            ]
+          },
+          {
+            "group": "Evasive Mode",
+            "pages": [
+              "evasion/overview",
+              "evasion/pacing",
+              "evasion/tor"
             ]
           },
           {
@@ -53,8 +69,8 @@
             "pages": [
               "attacks/manual-attacks",
               "attacks/automated-attacks",
-              "attacks/attack-equalizer",
-              "attacks/evasive-mode"
+              "attacks/categories",
+              "attacks/attack-equalizer"
             ]
           },
           {
@@ -110,6 +126,16 @@
               "admin/backups",
               "admin/resources",
               "admin/updates"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/configuration",
+              "reference/api",
+              "reference/cheat-sheet",
+              "reference/security",
+              "reference/faq"
             ]
           },
           {

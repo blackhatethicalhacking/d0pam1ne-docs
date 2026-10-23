@@ -34,7 +34,7 @@ Every engagement moves through the same pipeline. Each stage feeds the next, and
     Define the client and what is in scope. Recon and attacks act only inside it, and anything out of scope is logged, never probed. See [Client and scope](/concepts/scope).
   </Step>
   <Step title="Recon">
-    The engine maps the live attack surface: subdomains, DNS, ports, services, live web, URLs, content, parameters and secrets, with [profiles](/recon/overview) for speed or stealth and an adaptive [Evasive Mode](/recon/evasive-mode).
+    The engine maps the live attack surface: subdomains, DNS, ports, services, live web, URLs, content, parameters and secrets, with [profiles](/recon/overview) for speed or stealth and an adaptive [Evasive Mode](/evasion/overview).
   </Step>
   <Step title="OSINT">
     Map public exposure before you touch the target: ASNs, people and emails, exposed assets, dorks, email-security posture, breach and infostealer data. See [OSINT](/osint/overview).
@@ -56,7 +56,7 @@ Every engagement moves through the same pipeline. Each stage feeds the next, and
 ## What sets it apart
 
 <CardGroup cols={2}>
-  <Card title="Adaptive Evasive Mode" icon="user-ninja" href="/recon/evasive-mode">
+  <Card title="Adaptive Evasive Mode" icon="user-ninja" href="/evasion/overview">
     Not a fixed delay. D0pam1ne paces requests against how the target actually responds, backing off on rate-limiting and blocks, and can route supported tools through Tor with exit-IP rotation so no single address draws attention.
   </Card>
   <Card title="Recon that feeds attacks" icon="diagram-project" href="/attacks/automated-attacks">
@@ -88,7 +88,7 @@ Every engagement moves through the same pipeline. Each stage feeds the next, and
 | Install on Kali or macOS | [Installation](/getting-started/installation) |
 | Sign in and set up your team | [First login](/getting-started/first-login) |
 | Run your first recon | [Recon overview](/recon/overview) |
-| Stay quiet and avoid blocks | [Evasive Mode](/recon/evasive-mode) |
+| Stay quiet and avoid blocks | [Evasive Mode](/evasion/overview) |
 | Attack what recon found | [Automated Attacks](/attacks/automated-attacks) |
 | Produce a client report | [Report Builder](/reporting/report-builder) |
 

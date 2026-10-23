@@ -1,26 +1,45 @@
 ---
 title: "Report Builder"
-description: "Choose what goes in, brand it, and export in any format."
+description: "Pick a report type, tune the sections, brand it, and export in six formats. Only verified issues reach the client."
 ---
 
-The **Report Builder** turns verified findings into a client deliverable. Pick a report type, fine-tune the sections, apply your branding and export.
+The **Report Builder** turns verified findings into a client deliverable. Pick a type, fine-tune the sections, apply your branding and export. Only verified issues reach the client; items not yet verified are held back unless you opt in.
 
-<Frame caption="The Report Builder: type presets, sections and branding">
-  <img src="/images/reporting/report-builder.webp" alt="The Report Builder: type presets, sections and branding" />
+<Frame caption="The Report Builder: types, sections and branding">
+  <img src="/images/reporting/report-builder.webp" alt="The Report Builder: types, sections and branding" />
 </Frame>
 
 ## Report types
 
-Presets decide which sections ship and what the download is named: **Standard**, **Executive Summary**, **Full Report**, **Compliance (ISO)**, **NIS2**, **All Issues**, **BHEH Complete** and **BHEH Overview**. Each tunes the included sections, which you can then toggle by hand (executive summary, methodology, scope, findings overview, full write-ups, attack surface, partial traffic, glossary, out-of-scope observations).
+A type presets which sections ship and what the download is named:
+
+| Type | For |
+| --- | --- |
+| **Standard** | A balanced client report |
+| **Executive Summary** | Leadership: the summary and headline risk |
+| **Full Report** | Everything, maximum detail |
+| **Compliance (ISO)** | A compliance-framed assessment |
+| **NIS2** | NIS2-framed assessment |
+| **All Issues** | Every issue, no framing |
+| **BHEH Complete** / **BHEH Overview** | Founder edition: the full BHEH house anatomy, or a shorter overview |
+
+## Sections
+
+Every type ships a default set of sections, and you can tick them on or off: executive summary, approach and methodology, what was checked (coverage), scope, findings overview, full issue write-ups, attack surface, technologies, OSINT, partial traffic, glossary, and out-of-scope observations.
 
 ## Branding
 
-Your saved company logo and house colours (accent and secondary) are applied to the report cover, section numbers and accents, in both the PDF and the HTML. Override them per client when you need to.
+Your saved company logo and house colours (accent and secondary) are applied to the cover, section numbers and accents, in both the PDF and the HTML. Override them per client when you need to.
 
-## Penetration testing type
+## Export formats
 
-Set **External**, **Internal** or **Both**; it is shown on the cover.
+| Format | What it is |
+| --- | --- |
+| **PDF** | The fixed-layout house document for sending or printing |
+| **Interactive HTML** | A self-contained page the client can filter, sort and search, with a partial-traffic tab |
+| **Open HTML** | The same house design as one page, print to PDF from the browser |
+| **Markdown** | Plain Markdown |
+| **JSON** | The project, findings and hosts as data |
+| **Word (.docx)** | An editable copy for the team (Founder edition) |
 
-## Export
-
-Export as **PDF**, **Interactive HTML**, **Open HTML**, **Markdown**, **JSON** or **Word** (Founder edition). Only verified issues reach the client; items not yet verified are held back unless you opt in.
+<Note>Word export is a Founder edition feature and is being brought up to the exact per-theme, per-template layout of the PDF. For client delivery use the PDF or Interactive HTML, which are the finished house design.</Note>

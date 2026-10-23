@@ -1,0 +1,33 @@
+---
+title: "FAQ"
+description: "Common questions about running D0pam1ne, the engine, the AI, editions and reporting."
+---
+
+<AccordionGroup>
+  <Accordion title="Is the AI sending my data to the cloud?">
+    No. The AI is a local model run by Ollama on your machine. D0pam1ne refuses any AI endpoint that is not local, so project data, your questions, drafts and reports never leave the machine.
+  </Accordion>
+  <Accordion title="Do I need API keys to use D0pam1ne?">
+    No. The core recon and attack workflow needs no keys. Some sources do more with a key (Chaos, Shodan, GitHub, Censys and others for OSINT); they are optional and D0pam1ne simply reaches more data when they are present.
+  </Accordion>
+  <Accordion title="What is the difference between the engine and Pro?">
+    The engine is the open-source core: the recon and OSINT toolchain, driven from the `d0pam1ne` CLI. D0pam1ne Pro is the multi-user web app on top of it, adding attack orchestration, triage, reporting, team management and the local AI.
+  </Accordion>
+  <Accordion title="What is Founder Edition?">
+    Black Hat Ethical Hacking's in-house build. It unlocks the private BHEH report templates and Word (.docx) export. It is gated by a signed key that ships only in the in-house repo, so it cannot be enabled on a client build.
+  </Accordion>
+  <Accordion title="Does Evasive Mode make my scan less thorough?">
+    No. It scales a profile's pacing down (rates and concurrency) but leaves coverage alone (ports, crawl depth, wordlist sizes). A run gets quieter and gentler, not shallower, and the per-tool timeout is doubled to give the slower pace room.
+  </Accordion>
+  <Accordion title="Why do some attack tools not route through Tor?">
+    Payload tools (sqlmap, ghauri, commix and similar) are built on Python's requests, which needs an extra package for SOCKS and otherwise errors on every request. Tor is also slow and frequently blocked for payload work. Those tools stay direct but are still paced; the Go scanners and curl route through Tor.
+  </Accordion>
+  <Accordion title="Can I run it on Kali and macOS?">
+    Yes. `./install.sh` sets up both, using apt on Kali and Homebrew on macOS, and falls back to go, pip, cargo or git for individual tools.
+  </Accordion>
+  <Accordion title="How do I update?">
+    `git pull && ./install.sh && ./run.sh restart`, or use the in-app Updates page to fast-forward Pro and the engine to the latest release.
+  </Accordion>
+</AccordionGroup>
+
+Still stuck? [Open a ticket](https://support.blackhatethicalhacking.com) or [contact the team](https://www.blackhatethicalhacking.com/contact_us).

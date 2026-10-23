@@ -1,0 +1,79 @@
+---
+title: "The recon pipeline"
+description: "Fifteen ordered stages, from subdomains to JavaScript secrets, each running the right tools and filing results as it goes."
+---
+
+A recon run walks fifteen ordered **stages**. Each stage runs only the tools that apply to the current scope and that are installed; a stage with no installed tool is skipped rather than failing the run. You can pause between or within stages, or stop a single tool and let the run carry on.
+
+Scope the run with `--only` and `--skip`:
+
+```bash
+# Only subdomains, DNS and ports
+d0pam1ne recon --only subdomains,active,dns,ports
+
+# Everything except screenshots and content discovery
+d0pam1ne recon --skip screenshots,content
+```
+
+## The stages, in order
+
+<AccordionGroup>
+  <Accordion title="1. Subdomains" icon="sitemap">
+    Passive subdomain enumeration from your in-scope bases: **subfinder**, **assetfinder**, **amass** (passive, with ASN and IP intel) and the **Chaos** dataset (needs an API key), plus **crt.sh** certificate transparency. IP-only scopes skip this (names come from PTR and certificates instead).
+  </Accordion>
+  <Accordion title="2. Active subdomains" icon="broom">
+    DNS brute force and permutations. **puredns** (with the **massdns** backend and public resolvers) resolves `word.base` candidates with wildcard filtering; **alterx** generates permutations from the top DNS labels. Candidates under excluded names are never resolved.
+  </Accordion>
+  <Accordion title="3. DNS resolution" icon="server">
+    **dnsx** resolves A, AAAA and CNAME records with responses, at the profile's DNS rate. Writes `dns.json` and the list of names that did not resolve.
+  </Accordion>
+  <Accordion title="4. Port discovery" icon="ethernet">
+    **naabu** finds open ports (top 100, top 1000 or all 65535 by profile, CDN and excluded IPs removed). Large in-scope CIDR ranges are swept by **masscan** or **rustscan**. Path-limited hosts are not port scanned.
+  </Accordion>
+  <Accordion title="5. IP to names (pivot)" icon="arrows-left-right">
+    Reverse DNS (PTR) on in-scope IPs via **dnsx**. A discovered name is followed only when every address it resolves to is an in-scope IP.
+  </Accordion>
+  <Accordion title="6. Services (nmap)" icon="magnifying-glass">
+    **nmap** service, version and (where privileged) OS detection on the open ports, with your project's nmap options and timing. Falls back to naabu's open ports if nmap yields nothing.
+  </Accordion>
+  <Accordion title="7. Live web" icon="globe">
+    **httpx** probes names and host:port pairs for live web: status, title, server, tech, IP, CDN, TLS and redirects. Writes `web.json`, `live.txt` and passive HTTP records (headers and a bounded body).
+  </Accordion>
+  <Accordion title="8. WAF detection" icon="shield">
+    **wafw00f** fingerprints web application firewalls in front of the live hosts.
+  </Accordion>
+  <Accordion title="9. TLS certificates" icon="lock">
+    **tlsx** pulls certificate names and (optionally) TLS checks and versions. New in-scope certificate names are resolved and probed; names on in-scope IPs are followed.
+  </Accordion>
+  <Accordion title="10. Fingerprinting" icon="fingerprint">
+    **nuclei** runs **only** safe detection templates (technology, SSL and DNS, plus exposed panels on request) at info severity. No CVE or DAST templates run during recon, that is the attack phase.
+  </Accordion>
+  <Accordion title="11. Screenshots" icon="camera">
+    **gowitness** screenshots every live web target (needs Chrome or Chromium).
+  </Accordion>
+  <Accordion title="12. URLs" icon="link">
+    Crawling and archives: **katana** (with optional JavaScript crawling), **gau**, **waybackurls** and **urlfinder**, deduplicated with **uro**. Every URL is then probed live with httpx. Writes `urls.txt`, parameters and JavaScript file lists.
+  </Accordion>
+  <Accordion title="13. Content discovery" icon="folder-tree">
+    **feroxbuster** (preferred) or **ffuf** brute-forces directories and files per site, with the profile's wordlist, depth and time budget. Excluded paths are never requested.
+  </Accordion>
+  <Accordion title="14. Parameters" icon="square-sliders">
+    **x8** (preferred) or **arjun** discovers hidden query and body parameters using the SecLists `burp-parameter-names` list.
+  </Accordion>
+  <Accordion title="15. JavaScript" icon="code">
+    Fetches in-scope JavaScript (5 MB cap, no out-of-scope redirects) and analyses it with **jsluice**, **SecretOpt1c** and **trufflehog** for endpoints and secrets. Secrets are masked and never validated against the provider.
+  </Accordion>
+</AccordionGroup>
+
+## Control during a run
+
+<CardGroup cols={2}>
+  <Card title="Pause and resume" icon="pause">
+    `d0pam1ne pause` winds the tools running now down cleanly; `d0pam1ne recon --resume` continues the unfinished run from where it stopped.
+  </Card>
+  <Card title="Stop one tool" icon="hand">
+    `d0pam1ne stop-tool <id>` stops a single tool (or `all`) in a running recon; the run carries on with what the rest found.
+  </Card>
+</CardGroup>
+
+<Tip>Stages are independent: a failed or skipped stage does not stop the pipeline, and each writes its own JSON so partial runs are still useful. Re-running fills in what was missing rather than starting over.</Tip>

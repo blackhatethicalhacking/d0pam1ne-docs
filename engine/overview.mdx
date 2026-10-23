@@ -1,0 +1,63 @@
+---
+title: "The D0pam1ne engine"
+description: "The open-source core: one registry drives the recon and OSINT toolchain, phase by phase, from the CLI or from Pro."
+---
+
+The **D0pam1ne engine** is the open-source core beneath D0pam1ne Pro. A single tool registry drives everything: the recon pipeline, `d0pam1ne doctor`, `d0pam1ne tools install` and the installer all read from the same source, so the toolchain stays consistent whether you run from the terminal or from the Pro web app.
+
+## How it works
+
+The engine is a Python package you drive three ways:
+
+<CardGroup cols={3}>
+  <Card title="Interactive console" icon="terminal">
+    Run `d0pam1ne` with no arguments (or `d0pam1ne console`) for a guided, menu-driven session over the current project.
+  </Card>
+  <Card title="The CLI" icon="keyboard">
+    Scriptable subcommands for every action: `recon`, `attack`, `project`, `tools`, `scope`, `doctor`. See the [CLI reference](/engine/cli-reference).
+  </Card>
+  <Card title="D0pam1ne Pro" icon="browser">
+    Pro runs the same engine under the hood and streams its live events into the web UI. Nothing in Pro bypasses the engine.
+  </Card>
+</CardGroup>
+
+## The shape of a run
+
+Every recon run is the same shape: pick a **project** (which carries the scope), pick a **profile** (how fast or quiet), and the engine walks an ordered **pipeline** of stages, each running a set of tools, writing results into a per-run folder.
+
+<Steps>
+  <Step title="Scope guard">
+    Every target is checked against the project's in-scope and out-of-scope rules before any tool touches it. Out of scope always wins. See [Client and scope](/concepts/scope).
+  </Step>
+  <Step title="Profile">
+    One of `fast`, `stealth`, `normal` or `deep` sets the pacing, concurrency, wordlist sizes and time limits for the run. See [Recon profiles](/engine/profiles).
+  </Step>
+  <Step title="Pipeline">
+    Fifteen ordered stages, from subdomains to JavaScript secrets, each running only the tools that apply and that are installed. See [The recon pipeline](/engine/recon-pipeline).
+  </Step>
+  <Step title="Results">
+    Each stage writes JSON into the run folder. `d0pam1ne results` shows them, `d0pam1ne report` renders a one-page HTML summary, and `d0pam1ne export` hands the run to Pro.
+  </Step>
+</Steps>
+
+## Key building blocks
+
+<AccordionGroup>
+  <Accordion title="Projects" icon="folder">
+    A project is one engagement: a client, a scope, per-tool settings and its recon runs. Manage them with `d0pam1ne project new|list|edit|use|show|scope|nmap|settings`. The current project is the default target of `recon`, `attack` and `results`.
+  </Accordion>
+  <Accordion title="Scope" icon="crosshairs">
+    The scope guard supports exact domains, `*.wildcards`, single IPs, CIDR ranges, and path or port limited web rules. A path-limited host is crawled and probed only within its allowed URLs and is never port scanned. Full detail in [Client and scope](/concepts/scope).
+  </Accordion>
+  <Accordion title="Profiles and tool settings" icon="sliders">
+    A profile sets the run-wide pacing. Per-project `project settings --set tool.key=value` overrides individual tool behavior (for example `naabu.ports=full`, `katana.depth=3`, `gau.enabled=off`). The two are merged for each run.
+  </Accordion>
+  <Accordion title="The tool registry" icon="screwdriver-wrench">
+    One registry lists every tool, what it does, how to find it and how to install it (Homebrew, apt, go, pip, cargo or git). `d0pam1ne doctor` checks them; `d0pam1ne tools install` installs them. See the [Tools](/tools/overview) page.
+  </Accordion>
+  <Accordion title="Wordlists" icon="list">
+    Active discovery uses SecLists. The engine finds an existing copy (`$D0P_SECLISTS`, `/usr/share/seclists`, Homebrew) or installs its own, and each profile picks the wordlist size that fits. See [Wordlists](/tools/wordlists).
+  </Accordion>
+</AccordionGroup>
+
+<Note>The engine is open source and runs standalone from the terminal. D0pam1ne Pro adds the multi-user web app, attack orchestration, OSINT, triage and reporting on top of it.</Note>

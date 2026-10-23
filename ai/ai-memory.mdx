@@ -1,19 +1,27 @@
 ---
-title: "AI memory"
-description: "Teach the assistant your house style and per-project context."
+title: "AI memory and house style"
+description: "Teach the assistant your house style and per-project context, so drafts sound like your team."
 ---
 
-**AI memory** gives the local assistant lasting context: a per-project memory and a house style that applies to every project, so drafts sound like your team and respect your conventions.
+**AI memory** gives the local assistant lasting context, so drafts sound like your team and respect your conventions. There are two scopes: **project memory** for one engagement, and **global memory** (house style) that applies everywhere.
 
 <Frame caption="AI memory: project memory and house style">
   <img src="/images/ai/ai-memory.webp" alt="AI memory: project memory and house style" />
 </Frame>
 
-## What it holds
+## Project memory
 
-- **Project memory** — context the assistant should always read for this engagement: scoping notes, client preferences, wording to avoid.
-- **House style** — how your team writes: plain English, short paragraphs, business impact first.
+Notes the assistant should always read for this project: scoping context, client preferences, wording to avoid. Injected into every prompt for that project.
+
+## House style
+
+Two things shape your team's voice:
+
+- **Global memory** entries you pin as house style ("team notes to respect"), injected into every draft.
+- Your team's own **reviewed** issues. The assistant learns from issues you have verified, readied, reported or fixed (never from unreviewed AI drafts), and matches their tone, depth and structure on new findings. IP addresses are stripped from these examples so one target's data never leaks into another's draft.
 
 ## What the assistant can and cannot do
 
-It drafts issue sections from evidence and templates, writes the executive summary, and explains impact and remediation, always under your review. It will not run or suggest attacks, mark anything verified or publish without your approval, and it only ever uses the local model.
+It drafts from evidence and your style, under your review. It will not run or suggest attacks, mark anything verified, or publish without your approval, and it only ever uses the local model. See [Local AI](/ai/local-ai) for the guarantees.
+
+<Tip>The fastest way to teach house style is simply to review and verify a few issues the way you want them written. The assistant picks up your structure from those, no configuration needed.</Tip>
