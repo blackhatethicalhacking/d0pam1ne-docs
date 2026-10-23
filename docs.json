@@ -2,6 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "D0pam1ne",
+  "description": "Documentation for D0pam1ne, the offensive-security framework by Black Hat Ethical Hacking: one self-hosted workspace for reconnaissance, manual and automated attacks, OSINT, adaptive evasion, a private local AI and client-ready reporting, built by practitioners to take an engagement from scope to signed report.",
   "colors": {
     "primary": "#4cd964",
     "light": "#5be873",
