@@ -44,8 +44,133 @@ D0pam1ne Pro wraps the engine in a multi-user web app and adds the orchestration
 | Web workspace, projects, triage, Needs Review | No | **Yes** |
 | Local AI (triage, drafting, assistant) | No | **Yes** |
 | Client reporting (PDF, HTML, Word) | Run summary only | **Yes** |
+| Manual attacks (guided, per category) | Commands only | **Yes** |
+| Vulnerability intelligence (CVEs, exploits, KEV) | No | **Yes** |
+| Issues, AI triage and Needs Review | No | **Yes** |
+| Client reporting (PDF, HTML, Word) | Run summary only | **Yes** |
+| Retest reports (fixed vs still open) | No | **Yes** |
 | Multi-user, roles, 2FA, audit log | No | **Yes** |
 
-<Note>The things that get the most love, Automated Attacks and OSINT, live in Pro. The free engine is where the recon power and the toolchain come from, and it stands on its own.</Note>
+That table is the short version. Pro is a full workspace, and there is a lot in it.
+Here is the longer answer.
+
+### The War Room
+
+Pro is a self-hosted, multi-user web app: the [Command Center](/concepts/command-center)
+holds every client and [project](/concepts/projects) in one view, and the whole team
+works the same engagement at once with roles, two-factor login and a full audit log.
+
+<CardGroup cols={2}>
+  <Card title="Command Center" icon="table-columns" href="/concepts/command-center">
+    Every client, project and run in one place, with status and progress at a glance.
+  </Card>
+  <Card title="Projects and scope" icon="folder-open" href="/concepts/projects">
+    The same strict scope guard as the engine, managed visually, shared across the team.
+  </Card>
+</CardGroup>
+
+### Project Data: everything recon and OSINT find, in one place
+
+Instead of folders of text, Pro files every finding into a live, searchable workspace
+that cross-links as it fills.
+
+<CardGroup cols={2}>
+  <Card title="Hosts and services" icon="server" href="/data/hosts-and-services">
+    Every in-scope host, its names, ports, services and technologies.
+  </Card>
+  <Card title="Attack-surface graph" icon="diagram-project" href="/data/attack-surface">
+    The whole surface as a graph: how hosts, names and services connect.
+  </Card>
+  <Card title="Traffic log" icon="list-timeline" href="/data/traffic">
+    Every request and response the platform made, kept for evidence.
+  </Card>
+  <Card title="Out of scope" icon="ban" href="/data/out-of-scope">
+    Everything seen but never probed, with the reason it was refused.
+  </Card>
+</CardGroup>
+
+### Attacks that actually run
+
+The engine prepares the commands; Pro runs them for you, stage by stage, under a single
+intrusive opt-in, and paces them with Evasive Mode when recon saw a WAF.
+
+<CardGroup cols={2}>
+  <Card title="Automated Attacks" icon="robot" href="/attacks/automated-attacks">
+    Pro runs each [attack category](/attacks/categories) against the in-scope targets recon found, filing findings as it goes. One of the most-loved parts of the platform.
+  </Card>
+  <Card title="Manual Attacks" icon="hand-pointer" href="/attacks/manual-attacks">
+    The guided, per-category workflow for the testing you want to drive yourself.
+  </Card>
+  <Card title="The Attack Equalizer" icon="sliders" href="/attacks/attack-equalizer">
+    Tune intensity, categories and pacing like a mixing board before you run.
+  </Card>
+  <Card title="Evasive Mode, in full" icon="user-ninja" href="/evasion/overview">
+    Adaptive pacing and Tor egress across both recon and attacks, not just recon.
+  </Card>
+</CardGroup>
+
+### OSINT
+
+A whole phase the free engine does not have: map public exposure before you touch the
+target.
+
+<Card title="OSINT" icon="user-magnifying-glass" href="/osint/overview">
+  ASNs, people and emails, exposed assets, search-engine dorks, email-security posture, breach and infostealer data. Alongside Automated Attacks, the part that gets the most love.
+</Card>
+
+### Triage, intelligence and a local AI
+
+<CardGroup cols={2}>
+  <Card title="Issues and Needs Review" icon="list-check" href="/data/issues">
+    Findings flow into a triage queue; AI suggests a verdict and you confirm, edit or reject. Only verified issues reach the client.
+  </Card>
+  <Card title="Local AI" icon="microchip" href="/ai/local-ai">
+    An on-device model via Ollama for triage, report drafting and the Ask AI assistant. No cloud, no account, no telemetry.
+  </Card>
+  <Card title="AI memory" icon="brain" href="/ai/ai-memory">
+    The assistant remembers the engagement's context so its help stays relevant.
+  </Card>
+  <Card title="Vulnerability intel" icon="shield-halved" href="/vuln-intel/overview">
+    Look up CVEs, exploits, advisories and CISA KEV known-exploited status, built in.
+  </Card>
+</CardGroup>
+
+### Client-ready reporting
+
+<CardGroup cols={2}>
+  <Card title="Report Builder" icon="file-pen" href="/reporting/report-builder">
+    One branded house design, a full per-finding anatomy, across every format.
+  </Card>
+  <Card title="PDF and interactive HTML" icon="file-lines" href="/reporting/pdf-report">
+    A polished [PDF](/reporting/pdf-report) and a live [interactive HTML](/reporting/interactive-report) report from the same findings.
+  </Card>
+  <Card title="Word export" icon="file-word" href="/reporting/word-export">
+    Export to Word (.docx) when the client needs an editable document.
+  </Card>
+  <Card title="Retests" icon="rotate" href="/reporting/retest">
+    Re-run against verified findings and show the client what was fixed and what still stands.
+  </Card>
+</CardGroup>
+
+### Administration
+
+Everything a team running real engagements needs to run the platform itself.
+
+<CardGroup cols={2}>
+  <Card title="Team, roles and 2FA" icon="users" href="/admin/team">
+    Invite the team, set roles, require two-factor login.
+  </Card>
+  <Card title="Audit log" icon="clipboard-list" href="/admin/audit-log">
+    Who did what, when, across the whole platform.
+  </Card>
+  <Card title="Backups and storage" icon="database" href="/admin/backups">
+    Scheduled [backups](/admin/backups) and [storage](/admin/resources) you control.
+  </Card>
+  <Card title="Updates, keys and time" icon="gear" href="/admin/updates">
+    In-app [updates](/admin/updates), [API keys](/admin/api-keys) and a [time tracker](/admin/time-tracker).
+  </Card>
+</CardGroup>
+
+<Note>The things that get the most love, Automated Attacks and OSINT, live in Pro. The free engine is where the recon power and the toolchain come from, and it stands on its own. Everything above runs on infrastructure you control, with the AI on your own machine.</Note>
 
 See the [Support the project](/support) page for how to help keep the free engine growing.

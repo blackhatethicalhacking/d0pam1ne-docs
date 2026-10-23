@@ -1,0 +1,102 @@
+---
+title: "Results and report"
+description: "Where everything a run finds is saved: the live results browser, the one-page HTML report, and the run folder on disk."
+---
+
+Every recon run keeps everything it finds. Nothing is thrown away, nothing is
+hidden in a database you cannot read: it is all plain files in one folder per run,
+browsable from the terminal and summarised in a single HTML page named after the
+client.
+
+## The results browser
+
+Open **Results** from the menu and the engine shows the latest run at a glance: the
+headline counts, and a change summary against the previous run so you can see what
+is new since last time.
+
+<Frame caption="The run's totals, and a diff against the last run: new ports, new live web, closed ports">
+  <img src="/images/engine/results-summary.webp" alt="The D0pam1ne results summary with change tracking" />
+</Frame>
+
+From there you can drill into any part of the run. The live web list shows every
+responding endpoint with its status, title, technology and server:
+
+<Frame caption="Live web: every responding endpoint with status, title, tech and server">
+  <img src="/images/engine/results-live-web.webp" alt="The live web results table" />
+</Frame>
+
+And the services view lists every open port with the service and version behind it:
+
+<Frame caption="Services: every host and port with the service and product version">
+  <img src="/images/engine/results-services.webp" alt="The services results table" />
+</Frame>
+
+## The one-page report
+
+`d0pam1ne report` (or **Report** from the menu) renders the whole run into a single
+self-contained HTML page, named after the client, that you can open in a browser or
+hand straight to a teammate. It opens with the numbers that matter.
+
+<Frame caption="The one-page HTML report: the run's headline stats and the live web table">
+  <img src="/images/engine/report-overview.webp" alt="The one-page HTML recon report overview" />
+</Frame>
+
+Below the summary it lays out the full surface: every host, its names, OS and open
+ports.
+
+<Frame caption="Hosts and services: every in-scope IP with its names, OS and ports">
+  <img src="/images/engine/report-hosts.webp" alt="The hosts and services section of the report" />
+</Frame>
+
+Then the things worth a second look: services on unusual ports, certificate
+problems, possible secrets found in JavaScript (masked, with the full values kept in
+the run folder), and everything that was seen but left alone because it was out of
+scope.
+
+<Frame caption="Certificate problems, masked JavaScript secrets, and everything refused by scope">
+  <img src="/images/engine/report-findings.webp" alt="The findings section of the report" />
+</Frame>
+
+<Note>
+Secrets in the report are masked. The full values live in the run folder under
+`js/`, so you can confirm each one before you ever put it in a client report. The
+engine never validates a secret against its provider.
+</Note>
+
+## What lands on disk
+
+Every run writes a folder you own, in plain formats. Nothing is locked away.
+
+<Frame caption="One folder per project, one per run: lists, JSON, screenshots, the log and the report">
+  <img src="/images/engine/tour-results.webp" alt="The results folder layout and keyboard commands" />
+</Frame>
+
+```
+~/BugBounty/D0pam1ne/results/
+  <project>/                         one folder per project
+    runs/<run>/                      one folder per recon run
+      <Client>_recon-report_<run>.html   the one-page summary
+      subdomains.txt  live.txt  urls.txt  the lists
+      services.json   web.json   ...       everything in detail
+      screenshots/  raw/  run.log          pictures, each tool's output, the log
+      attack/                              target lists for the attack toolkit
+```
+
+Because it is all just files, you can grep it, diff it, pipe it into your own
+scripts, or hand the whole folder to [D0pam1ne Pro](/getting-started/editions) with
+`d0pam1ne export`.
+
+## From the CLI
+
+```bash
+d0pam1ne results [--run ID]          # show the results of the last (or a given) run
+d0pam1ne report  [--run ID] [--open] # render the one-page HTML, optionally open it
+d0pam1ne export  [--run ID]          # hand the run to D0pam1ne Pro
+```
+
+<Tip>
+The change summary on the results screen compares the current run against the
+previous one for the same project, so re-running recon on a schedule turns
+D0pam1ne into a lightweight attack-surface monitor: new ports and new hosts jump out
+the moment they appear.
+</Tip>

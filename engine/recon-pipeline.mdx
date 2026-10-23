@@ -5,6 +5,12 @@ description: "Fifteen ordered stages, from subdomains to JavaScript secrets, eac
 
 A recon run walks fifteen ordered **stages**. Each stage runs only the tools that apply to the current scope and that are installed; a stage with no installed tool is skipped rather than failing the run. You can pause between or within stages, or stop a single tool and let the run carry on.
 
+<Frame caption="The fifteen stages, the tools each one runs, and what you get from it">
+  <img src="/images/engine/tour-stages.webp" alt="The fifteen recon stages, stage by stage" />
+</Frame>
+
+To watch a run happen (the briefing, the live screen and the per-stage summary), see [Running a recon](/engine/running-recon).
+
 Scope the run with `--only` and `--skip`:
 
 ```bash

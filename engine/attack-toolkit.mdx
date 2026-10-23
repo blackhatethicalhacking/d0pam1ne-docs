@@ -1,0 +1,81 @@
+---
+title: "The attack toolkit"
+description: "Recon prepares the targets and the tested commands; you decide what to run. Nothing attacks on its own."
+---
+
+The engine does not attack anything by itself. What it does is take everything recon
+found and turn it into the next step for you: in-scope target lists, and tested
+commands you copy and run by hand, paced for a WAF when recon saw one. You stay in
+control of every packet that leaves.
+
+<Frame caption="Recon finds the targets, you pick a category, you run its commands, you import the output into Pro">
+  <img src="/images/engine/tour-attack.webp" alt="The attack toolkit flow and its 15 categories" />
+</Frame>
+
+## How it works
+
+<Steps>
+  <Step title="Recon finds the targets">
+    Run recon first. Each attack category reads the recon signal that justifies it and builds its own in-scope target list.
+  </Step>
+  <Step title="Pick a category">
+    Open **Attack toolkit** from the menu and choose a category. The ones with targets are where recon actually found something.
+  </Step>
+  <Step title="Run its commands by hand">
+    Each category gives you tested commands with the target lists already filled in. You copy and run them yourself, so nothing happens without your say-so.
+  </Step>
+  <Step title="Import the output into Pro">
+    Output files are named after the project. Import them into [D0pam1ne Pro](/getting-started/editions) for triage, evidence and reporting.
+  </Step>
+</Steps>
+
+## Pick a category
+
+The toolkit lists every category with a target count, so you can see at a glance
+where recon found something worth testing. Empty categories are greyed out; the ones
+with targets are live.
+
+<Frame caption="Fifteen categories, each with its target count and the tools it would run">
+  <img src="/images/engine/attack-categories.webp" alt="Picking an attack category in the toolkit" />
+</Frame>
+
+## Run its commands
+
+Open a category and the engine shows exactly what it prepared: what the category is
+for, the target lists it built (with counts), the folder they live in, and the
+numbered commands to run. Every command already points at the right in-scope list and
+writes a named output file.
+
+<Frame caption="A category in full: what it tests, the target lists, and the exact commands to run">
+  <img src="/images/engine/attack-commands.webp" alt="The prepared commands for the Network attack category" />
+</Frame>
+
+<Warning>
+Nothing in the toolkit runs on its own. The engine prepares in-scope lists and tested
+commands, paced for a WAF when recon saw one, and you decide what to run. Only ever
+test what you are authorized to test.
+</Warning>
+
+## The categories
+
+The toolkit covers 15 attack categories, from injection and XSS to CMS, TLS,
+takeover, smuggling, API and GraphQL, cloud and more. For the complete list of
+categories and the tools in each, with what every tool does and where its source
+lives, see the [tool reference](/tools/catalog).
+
+## From the CLI
+
+```bash
+# Show every category and its target counts for the current project
+d0pam1ne attack
+
+# Show one category's prepared target lists and commands
+d0pam1ne attack network
+```
+
+<Note>
+The toolkit is the open-source engine's hand-off point. D0pam1ne Pro takes the same
+in-scope target lists and runs the categories for you under a single intrusive opt-in,
+then triages the findings with a local AI and files them with evidence. See
+[Free engine and Pro](/getting-started/editions).
+</Note>

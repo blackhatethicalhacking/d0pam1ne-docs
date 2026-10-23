@@ -36,8 +36,11 @@
             "group": "The engine",
             "pages": [
               "engine/overview",
+              "engine/running-recon",
               "engine/recon-pipeline",
               "engine/profiles",
+              "engine/results",
+              "engine/attack-toolkit",
               "engine/cli-reference"
             ]
           },

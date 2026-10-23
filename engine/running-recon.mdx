@@ -1,0 +1,112 @@
+---
+title: "Running a recon"
+description: "From the authorization briefing to the live run screen to the per-stage summary: what a recon looks like as it happens."
+---
+
+Recon is the engine's main event. You pick a profile, confirm you are authorized,
+and watch the attack surface fill in live, stage by stage. This page walks through
+a run as it happens. For the stages themselves see [the recon pipeline](/engine/recon-pipeline),
+and for pacing see [profiles](/engine/profiles).
+
+## 1. Pick a profile
+
+From the menu, **Run recon** first asks how deep to go. Each profile is one line of
+plain language about coverage and speed, so the choice is never a guess.
+
+<Frame caption="Fast, Stealth, Normal or Deep: coverage and pacing in one line each">
+  <img src="/images/engine/profile-picker.webp" alt="Choosing a recon profile in the D0pam1ne engine" />
+</Frame>
+
+## 2. Confirm the briefing
+
+Before a single packet goes out, the engine shows a **recon briefing**: who is
+testing, the project and engagement type, what is in and out of scope, the chosen
+profile and plan, the exact nmap flags, and the rules of engagement. Then it asks
+one plain question.
+
+<Frame caption="The briefing, and the authorization gate: nothing runs until you answer">
+  <img src="/images/engine/recon-briefing.webp" alt="The recon briefing and authorization prompt" />
+</Frame>
+
+<Warning>
+The authorization prompt is not a formality. Only run against targets you are
+authorized to test. Answer `y` only when the scope on screen matches your
+engagement's rules of engagement. From the CLI, `--yes` confirms this
+non-interactively, so use it only in authorized automation.
+</Warning>
+
+## 3. Watch it run
+
+Once you confirm, the live run screen takes over. It is dense on purpose: every
+number you care about updates in place as the tools work.
+
+<Frame caption="The live run: stage progress, running tools, live counters and throughput">
+  <img src="/images/engine/recon-live.webp" alt="The live recon run screen, subdomains stage" />
+</Frame>
+
+What you are looking at:
+
+<CardGroup cols={2}>
+  <Card title="Stage progress" icon="list-check">
+    The current stage, how many of its tools are done, and the overall `n/15 stages` counter with a progress bar.
+  </Card>
+  <Card title="Live counters" icon="gauge-high">
+    Subdomains, resolved, open ports, services, live web, URLs, WAFs, panels, screenshots, secrets and refused-by-scope, all counting up as findings land.
+  </Card>
+  <Card title="Tool output" icon="scroll">
+    The raw stream from the tools running now, scrollable with the arrow keys and PgUp / PgDn, so you can watch exactly what each one finds.
+  </Card>
+  <Card title="Throughput" icon="wave-pulse">
+    Network in and out, output lines per second, an ETA, and which tools are working versus finished.
+  </Card>
+</CardGroup>
+
+As the run moves into later stages the same screen keeps up: here DNS resolution
+is mapping names to addresses while the counters climb.
+
+<Frame caption="Later in the same run: the DNS resolution stage resolving names to IPs">
+  <img src="/images/engine/recon-live-dns.webp" alt="The live recon run screen, DNS resolution stage" />
+</Frame>
+
+### Keys during a run
+
+| Key | What it does |
+| --- | --- |
+| `↑` `↓` `PgUp` `PgDn` | Scroll the tool output while recon runs |
+| `End` / `q` | Jump back to the live output |
+| `s` | Stop the tool running now; the run carries on |
+| `Ctrl+C` | Stop the run. Everything found is kept, and Resume picks it up |
+
+## 4. Read the per-stage summary
+
+When the run finishes (or when you stop it), the engine prints a summary of every
+stage: what it found, how long it took, which tools ran, and anything that was not
+installed and got skipped. A stopped run resumes exactly where it left off.
+
+<Frame caption="Each stage with its counts, timing, tools and any skips">
+  <img src="/images/engine/run-stages.webp" alt="The per-stage recon summary" />
+</Frame>
+
+<Tip>
+A skipped or failed stage never stops the pipeline: each writes its own files, so
+a partial run is still useful, and re-running fills in what was missing rather than
+starting over. See [Results and report](/engine/results) for everything the run
+leaves behind.
+</Tip>
+
+## From the CLI
+
+The same run, without the interactive screen:
+
+```bash
+# A quick, authorized run of just the surface
+d0pam1ne recon --profile fast --only subdomains,dns,ports,web --yes
+
+# Resume an interrupted deep run
+d0pam1ne recon --profile deep --resume
+
+# Plain line output instead of the live screen (good for logs and CI)
+d0pam1ne recon --profile normal --plain --yes
+```
+
+See the full [CLI reference](/engine/cli-reference) for every flag.
