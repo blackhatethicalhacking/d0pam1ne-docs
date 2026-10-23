@@ -1,0 +1,51 @@
+---
+title: "Free engine and Pro"
+description: "What the open-source D0pam1ne engine gives you for free, and what D0pam1ne Pro adds on top."
+---
+
+D0pam1ne comes in two parts. The **engine** is open source and free. **D0pam1ne Pro** is the multi-user web application built on top of it. You can run the engine on its own from the terminal, or run Pro to get the full workspace.
+
+## The free engine
+
+The open-source engine is a complete reconnaissance and attack-planning toolchain, driven by the `d0pam1ne` CLI. For free, you get:
+
+<CardGroup cols={2}>
+  <Card title="Full recon pipeline" icon="radar">
+    All fifteen [recon stages](/engine/recon-pipeline): subdomains, DNS, ports, services, live web, TLS, fingerprinting, screenshots, URLs, content, parameters and JavaScript secrets.
+  </Card>
+  <Card title="Profiles and scope" icon="sliders">
+    The [fast, stealth, normal and deep profiles](/engine/profiles), and a strict [scope guard](/concepts/scope) with domains, wildcards, IPs, ranges and path-limited rules.
+  </Card>
+  <Card title="The whole toolchain" icon="screwdriver-wrench">
+    One registry that installs and manages every recon tool, with `d0pam1ne doctor`, `tools install` and SecLists [wordlists](/tools/wordlists).
+  </Card>
+  <Card title="Attack planning" icon="crosshairs">
+    `d0pam1ne attack` builds the in-scope target lists and the exact, tested commands for each [attack category](/attacks/categories), ready to run by hand. Nothing runs automatically.
+  </Card>
+  <Card title="The full CLI" icon="terminal">
+    Projects, runs, results, pause and resume, export, the [complete CLI](/engine/cli-reference).
+  </Card>
+  <Card title="Reports of a run" icon="file-lines">
+    `d0pam1ne report` renders a one-page HTML summary of any run.
+  </Card>
+</CardGroup>
+
+## What Pro adds
+
+D0pam1ne Pro wraps the engine in a multi-user web app and adds the orchestration and workflow a team needs:
+
+| Capability | Free engine | D0pam1ne Pro |
+| --- | --- | --- |
+| Recon pipeline and tools | Yes | Yes |
+| Attack planning (targets and commands) | Yes | Yes |
+| **Automated attacks** (runs the tools, stage by stage) | Manual only | **Yes** |
+| **OSINT** (ASN, people, exposed assets, dorks, breach) | No | **Yes** |
+| **Evasive Mode** (adaptive pacing, Tor) | Recon pacing | **Full, recon and attacks** |
+| Web workspace, projects, triage, Needs Review | No | **Yes** |
+| Local AI (triage, drafting, assistant) | No | **Yes** |
+| Client reporting (PDF, HTML, Word) | Run summary only | **Yes** |
+| Multi-user, roles, 2FA, audit log | No | **Yes** |
+
+<Note>The things that get the most love, Automated Attacks and OSINT, live in Pro. The free engine is where the recon power and the toolchain come from, and it stands on its own.</Note>
+
+See the [Support the project](/support) page for how to help keep the free engine growing.

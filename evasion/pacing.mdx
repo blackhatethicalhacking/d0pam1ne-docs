@@ -43,8 +43,8 @@ Each host moves through states as its signals change:
 
 The rate follows **additive increase, multiplicative decrease**, the same principle that keeps TCP stable:
 
-- **Clean interval:** `rate = min(rate + step, ceiling)` — climb gently.
-- **Block:** `rate = max(rate x backoff, floor)` — drop sharply (balanced halves it).
+- **Clean interval:** `rate = min(rate + step, ceiling)`, climb gently.
+- **Block:** `rate = max(rate x backoff, floor)`, drop sharply (balanced halves it).
 
 The exact start, step, ceiling, floor, back-off and cooldown values come from the chosen [intensity](/evasion/overview#intensities). Balanced, for example, starts at 8 req/s, steps by 2, ceils at 30, floors at 1 and halves on a block.
 

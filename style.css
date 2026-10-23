@@ -1,0 +1,29 @@
+/* D0pam1ne brand accents for the docs. The house palette. */
+:root {
+  --d0-pink: #ff3d9a;
+  --d0-purple: #c06bff;
+  --d0-cyan: #38e1ff;
+  --d0-green: #4cd964;
+  --d0-amber: #ffb547;
+}
+
+/* Numbered steps: give the markers the brand gradient instead of a flat grey, and cycle the
+   house colours down a sequence so 1-2-3-4 reads in colour, like the app. */
+.steps [class*="rounded-full"],
+.steps li > div:first-child,
+ol.steps > li::before {
+  background-image: linear-gradient(135deg, var(--d0-pink), var(--d0-cyan)) !important;
+  color: #04120a !important;
+  border: none !important;
+}
+
+/* Accordion and card icons pick up the house green, and cards lift on the brand colour on hover. */
+#sidebar a.active, .sidebar a[data-active="true"] { color: var(--d0-green) !important; }
+
+/* Callout (Note/Tip/Warning) left borders in house colours so they are not flat. */
+.callout, [class*="callout"] { border-left-width: 3px; }
+
+/* Card hover: a subtle brand-coloured ring. */
+a[class*="card"]:hover, .card:hover {
+  border-color: color-mix(in srgb, var(--d0-green) 50%, transparent) !important;
+}

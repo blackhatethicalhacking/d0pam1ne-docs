@@ -18,6 +18,7 @@
             "group": "Getting started",
             "pages": [
               "introduction",
+              "getting-started/editions",
               "getting-started/installation",
               "getting-started/first-login",
               "getting-started/the-guide"
@@ -143,7 +144,8 @@
             "group": "Extras",
             "pages": [
               "extras/playtime",
-              "extras/help-and-support"
+              "extras/help-and-support",
+              "support"
             ]
           }
         ]
