@@ -114,6 +114,7 @@
             "group": "Tools",
             "pages": [
               "tools/overview",
+              "tools/catalog",
               "tools/wordlists"
             ]
           },

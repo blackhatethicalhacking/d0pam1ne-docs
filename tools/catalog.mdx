@@ -1,0 +1,313 @@
+---
+title: "Tool reference"
+description: "Every tool D0pam1ne drives, grouped by where it runs in the flow: what it does, why it is there, and its source."
+---
+
+D0pam1ne does not bolt twenty scanners together at random. Every tool sits at a
+specific point in the flow, fed by the stage before it and feeding the stage
+after. This page is the full catalog: **77 tools across 23 categories**, grouped
+the way the engine runs them, each with what it does, why it earns its place, and
+where its source lives.
+
+<Note>
+**Core** tools (marked below) make up the default recon pipeline: 16 tools that
+run automatically on every scan. Everything else is **optional**, installed
+alongside but run when you choose it, by profile, by category, or by hand. The
+attack tools are always run deliberately, never by recon.
+</Note>
+
+Three of these are Black Hat Ethical Hacking's own, built for gaps the flow
+exposed and marked **BHEH** throughout: **SecretOpt1c**, **D0rkerR3con** and
+**AdminPBuster**.
+
+Install, version and update every one of these from the in-app [Tools page](/tools/overview).
+
+## Recon flow
+
+Recon widens the picture one stage at a time. Hostnames resolve to IPs, IPs
+reveal open ports, ports reveal web servers, web servers reveal URLs, URLs
+reveal parameters and secrets. Each category below is one of those stages, and
+its tools exist to carry that stage as far as it goes before handing off.
+
+### Subdomains and DNS
+
+Discover the target's hostnames and resolve them, widening the in-scope surface
+before anything is probed.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [subfinder](https://github.com/projectdiscovery/subfinder) | Discovers subdomains from dozens of passive sources (certificate logs, DNS datasets, search engines) without touching the target. | ✓ |
+| [amass](https://github.com/owasp-amass/amass) | Maps the external surface in depth: subdomains, related ASNs and IP ranges from passive intel. | ✓ |
+| [assetfinder](https://github.com/tomnomnom/assetfinder) | Finds subdomains and related domains tied to the target from public sources. | ✓ |
+| [dnsx](https://github.com/projectdiscovery/dnsx) | Resolves hostnames and pulls DNS records (A, AAAA, CNAME, MX, PTR and more) to confirm what is live. | ✓ |
+| [chaos](https://github.com/projectdiscovery/chaos-client) | Pulls known subdomains from ProjectDiscovery's Chaos dataset (API key required). | |
+| [alterx](https://github.com/projectdiscovery/alterx) | Generates likely subdomain permutations to resolve, catching hosts passive sources missed. | |
+| [puredns](https://github.com/d3mondev/puredns) | Brute-forces and resolves subdomains from a wordlist, filtering DNS wildcard noise. | |
+| [massdns](https://github.com/blechschmidt/massdns) | Resolves very large hostname lists to IPs quickly; the engine behind puredns. | |
+| [asnmap](https://github.com/projectdiscovery/asnmap) | Turns an org's ASN into the IP ranges it owns, widening the in-scope network footprint. | |
+
+### Ports and services
+
+Find which ports are open on the resolved hosts and identify the services behind
+them.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [naabu](https://github.com/projectdiscovery/naabu) | Quickly finds which TCP ports are open on in-scope hosts. | ✓ |
+| [nmap](https://nmap.org) | Scans open ports in detail to identify service, product, version and often the OS. | ✓ |
+| [cdncheck](https://github.com/projectdiscovery/cdncheck) | Flags IPs belonging to CDNs or WAF edges so testing focuses on the real origin. | ✓ |
+| [masscan](https://github.com/robertdavidgraham/masscan) | Sweeps large IP ranges at high speed to find open ports across a wide network. | |
+| [rustscan](https://github.com/RustScan/RustScan) | Finds open ports quickly, then hands them to nmap for detailed identification. | |
+| [smap](https://github.com/s0md3v/smap) | Reads open-port data passively from Shodan's InternetDB: no packets to the target, no key. | |
+
+### Live web, TLS and fingerprinting
+
+Confirm which hosts serve web, capture their fingerprints, and run the safe
+recon-stage checks.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [httpx](https://github.com/projectdiscovery/httpx) | Probes hosts for live web servers; records status, title, tech, TLS and CDN. | ✓ |
+| [tlsx](https://github.com/projectdiscovery/tlsx) | Collects TLS and certificate details, including the hostnames listed on each certificate. | ✓ |
+| [nuclei](https://github.com/projectdiscovery/nuclei) | Template scanner. In recon it runs only safe fingerprinting templates; in the attack phase it runs full vuln templates, a CISA KEV known-exploited pass and DAST parameter fuzzing. | ✓ |
+| [gowitness](https://github.com/sensepost/gowitness) | Screenshots every live web page so the team can eyeball the surface at a glance. | |
+| [wafw00f](https://github.com/EnableSecurity/wafw00f) | Detects whether a WAF sits in front of a site, and which one. | |
+
+### URLs and crawling
+
+Gather known and crawlable URLs and endpoints to feed content and parameter
+discovery.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [katana](https://github.com/projectdiscovery/katana) | Crawls a site, following links and parsing JavaScript, to discover URLs and endpoints. | ✓ |
+| [gau](https://github.com/lc/gau) | Collects URLs already known for the domain from public archives (Wayback, Common Crawl, URLScan and others). | ✓ |
+| [waybackurls](https://github.com/tomnomnom/waybackurls) | Pulls historical URLs for the domain from the Wayback Machine. | ✓ |
+| [uro](https://github.com/s0md3v/uro) | Cleans and de-duplicates large URL lists down to the distinct, interesting ones. | ✓ |
+| [urlfinder](https://github.com/projectdiscovery/urlfinder) | Gathers URLs for the target from passive sources. | |
+
+### Content discovery
+
+Brute-force the hidden files, directories and vhosts that crawling does not find.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [ffuf](https://github.com/ffuf/ffuf) | Fuzzes a site to discover hidden files, directories and parameters from a wordlist. | ✓ |
+| [feroxbuster](https://github.com/epi052/feroxbuster) | Recursively brute-forces directories and files to map hidden content. | |
+| [gobuster](https://github.com/OJ/gobuster) | Brute-forces directories and virtual hosts to find hidden content. | |
+
+### Parameters
+
+Surface the hidden input parameters that endpoints accept but do not advertise.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [arjun](https://github.com/s0md3v/Arjun) | Finds hidden HTTP parameters an endpoint accepts but does not advertise. | |
+| [x8](https://github.com/Sh1Yo/x8) | Discovers hidden request parameters by fuzzing. | |
+| [paramspider](https://github.com/devanshbatham/ParamSpider) | Mines parameter names for the target from public archives. | |
+
+### JavaScript and secrets
+
+Mine client-side JavaScript for endpoints and exposed secrets.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [jsluice](https://github.com/BishopFox/jsluice) | Extracts endpoints, URLs and secrets embedded in a site's JavaScript. | |
+| [SecretOpt1c](https://github.com/blackhatethicalhacking/SecretOpt1c) **BHEH** | Scans JavaScript for exposed secrets, API keys and tokens. BHEH's own, built to turn the JS stage into a real secrets hunt. | |
+| [trufflehog](https://github.com/trufflesecurity/trufflehog) | Hunts for secrets and credentials in fetched JavaScript (recon) and in public repos (OSINT). | |
+
+## OSINT
+
+Gather intelligence from third parties (scan engines, search dorks, code,
+email and DNS) without hitting the target directly, so you know the public
+exposure before you probe anything. OSINT and automated attacks are
+[D0pam1ne Pro](/getting-started/editions) features.
+
+| Tool | What it does | Core |
+| --- | --- | :---: |
+| [uncover](https://github.com/projectdiscovery/uncover) | Queries internet-wide scan engines (Shodan, Censys, FOFA, ZoomEye, Hunter, Quake) for exposed assets, with your own keys. | ✓ |
+| [D0rkerR3con](https://github.com/blackhatethicalhacking/D0rkerR3con-Framework) **BHEH** | Runs search-engine dorks and passive OSINT to surface exposed pages and data. BHEH's own dorking framework. | |
+| [theHarvester](https://github.com/laramies/theHarvester) | Gathers emails, names and hosts for the target from public sources. | |
+| [github-subdomains](https://github.com/gwen001/github-subdomains) | Finds subdomains mentioned in public GitHub code, using a GitHub token. | |
+| [gitleaks](https://github.com/gitleaks/gitleaks) | Scans public repositories for leaked secrets and credentials. | |
+| [cloud_enum](https://github.com/initstring/cloud_enum) | Looks for public cloud storage (S3, Azure, GCP) named after the client that may be exposed. | |
+| [holehe](https://github.com/megadose/holehe) | Checks an email against many services to reveal where the account is registered. | |
+| [dnstwist](https://github.com/elceef/dnstwist) | Generates and resolves lookalike and typosquatting variants of the domain to surface phishing and impersonation risk. | |
+
+## Attack flow
+
+Attack tools are installed by D0pam1ne but run deliberately, never by recon.
+Each category reads the recon signal that justifies it and builds its in-scope
+target list automatically, so the right tool runs against the right host.
+Automated attacks are a [D0pam1ne Pro](/getting-started/editions) feature.
+
+<AccordionGroup>
+<Accordion title="Injection" icon="syringe">
+
+SQL, command, template and file-inclusion injection: the classic input-reaches-interpreter bugs.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| sqlmap | Detects and exploits SQL injection. | [GitHub](https://github.com/sqlmapproject/sqlmap) |
+| ghauri | A fast second opinion to sqlmap for SQL injection. | [GitHub](https://github.com/r0oth3x49/ghauri) |
+| commix | Detects and exploits command injection (input reaching an OS command). | [GitHub](https://github.com/commixproject/commix) |
+| sstimap | Detects server-side template injection and escalates to code execution. | [GitHub](https://github.com/vladko312/SSTImap) |
+| lfimap | Tests local and remote file inclusion, PHP wrappers and log poisoning. | [GitHub](https://github.com/hansmach1ne/lfimap) |
+| nosqli | Tests NoSQL injection against MongoDB and similar. | [GitHub](https://github.com/Charlie-belmer/nosqli) |
+
+</Accordion>
+<Accordion title="XSS" icon="code">
+
+Cross-site scripting, verified in a real browser to cut false positives.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| dalfox | Scans for XSS and verifies hits in a headless browser to cut false positives. | [GitHub](https://github.com/hahwul/dalfox) |
+
+</Accordion>
+<Accordion title="Web scanners" icon="radar">
+
+Broad web scanners whose results are normalized into D0pam1ne's own findings.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| nikto | Checks a web server for known misconfigurations, dangerous files and outdated components. | [GitHub](https://github.com/sullo/nikto) |
+| wapiti | Black-box web application scanner probing common vuln classes. | [GitHub](https://github.com/wapiti-scanner/wapiti) |
+| sn1per | Automated web and network scanner whose report is imported into D0pam1ne. | [GitHub](https://github.com/1N3/Sn1per) |
+| vigolium | Web vulnerability scanner whose results are imported into D0pam1ne. | [GitHub](https://github.com/vigolium/vigolium) |
+
+</Accordion>
+<Accordion title="CMS" icon="newspaper">
+
+Targeted audits for the platforms most sites actually run on.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| wpscan | Audits WordPress core, plugins, themes and users for known vulnerable versions. | [GitHub](https://github.com/wpscanteam/wpscan) |
+| droopescan | Scans Drupal, Joomla, SilverStripe and Moodle for version and plugin issues. | [GitHub](https://github.com/SamJoan/droopescan) |
+
+</Accordion>
+<Accordion title="TLS" icon="lock">
+
+Transport security: protocols, ciphers, certificates and known TLS flaws.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| testssl | Tests TLS and SSL config: protocols, ciphers, certificate and known TLS flaws. | [GitHub](https://github.com/testssl/testssl.sh) |
+
+</Accordion>
+<Accordion title="Takeover" icon="flag">
+
+Dangling DNS pointing at unclaimed services.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| subzy | Checks subdomains for takeover (dangling DNS pointing to an unclaimed service). | [GitHub](https://github.com/PentestPad/subzy) |
+
+</Accordion>
+<Accordion title="Network" icon="network-wired">
+
+Non-web services exposed on open ports.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| ssh-audit | Audits an SSH server's algorithms, host keys and known CVEs. | [GitHub](https://github.com/jtesta/ssh-audit) |
+| onesixtyone | Checks SNMP services for weak or default community strings. | [GitHub](https://github.com/trailofbits/onesixtyone) |
+
+</Accordion>
+<Accordion title="Metasploit" icon="bomb">
+
+Exploit validation under the intrusive opt-in.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| metasploit | The Metasploit Framework, used to validate exploitability under the intrusive opt-in. | [GitHub](https://github.com/rapid7/metasploit-framework) |
+
+</Accordion>
+<Accordion title="Smuggling and cache" icon="layer-group">
+
+Desync and cache attacks that live between the front-end and the back-end.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| smuggler | Tests HTTP request smuggling (CL.TE and TE.CL desync) between front-end and back-end. | [GitHub](https://github.com/defparam/smuggler) |
+| wcvs | Web Cache Vulnerability Scanner: cache poisoning and cache deception. | [GitHub](https://github.com/Hackmanit/Web-Cache-Vulnerability-Scanner) |
+| h2csmuggler | Tests HTTP/2 cleartext (h2c) smuggling that can bypass a front-end proxy. | [GitHub](https://github.com/BishopFox/h2csmuggler) |
+
+</Accordion>
+<Accordion title="API and GraphQL" icon="brackets-curly">
+
+The auth and schema bugs specific to API and GraphQL surfaces.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| graphw00f | Detects GraphQL endpoints and fingerprints the engine behind them. | [GitHub](https://github.com/dolevf/graphw00f) |
+| graphql-cop | Audits GraphQL for introspection exposure, field suggestions, CSRF, batching and alias-based DoS. | [GitHub](https://github.com/dolevf/graphql-cop) |
+| jwt_tool | Tests JWTs for algorithm confusion, alg:none acceptance and weak signing secrets. | [GitHub](https://github.com/ticarpi/jwt_tool) |
+
+</Accordion>
+<Accordion title="Redirect, CRLF, CORS and headers" icon="arrows-turn-right">
+
+Response-splitting and header-level bugs that bypass front-end controls.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| crlfuzz | Tests for CRLF injection (newlines injected into responses). | [GitHub](https://github.com/dwisiswant0/crlfuzz) |
+| corsy | Checks for CORS misconfigurations that could expose data to other sites. | [GitHub](https://github.com/s0md3v/Corsy) |
+| oralyzer | Analyses URLs for open redirect, CRLF and header injection. | [GitHub](https://github.com/r0075h3ll/Oralyzer) |
+| headerpwn | Fuzzes HTTP headers for host-header injection and header-based access bypasses. | [GitHub](https://github.com/devanshbatham/headerpwn) |
+
+</Accordion>
+<Accordion title="Admin panels" icon="user-lock">
+
+Finding the login and admin surfaces that are not meant to be found.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| AdminPBuster **BHEH** | Brute-forces paths to find hidden admin and login panels. BHEH's own. | [GitHub](https://github.com/blackhatethicalhacking/AdminPBuster) |
+
+</Accordion>
+<Accordion title="Cloud" icon="cloud">
+
+Public and misconfigured cloud storage.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| s3scanner | Finds public and misconfigured storage buckets across AWS, GCP and DigitalOcean. | [GitHub](https://github.com/sa7mon/s3scanner) |
+
+</Accordion>
+<Accordion title="Evasion (Tor)" icon="user-ninja">
+
+The egress side of [Evasive Mode](/evasion/overview): grouped under the attack set so they install together.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| tor | Tor client for Evasive Mode: SOCKS egress on 9050 and fresh exit IPs via control port 9051. | Installed via brew and apt |
+| proxychains | proxychains4, to force a tool with no proxy flag of its own through Tor. | Installed via brew and apt |
+
+</Accordion>
+</AccordionGroup>
+
+## Vulnerability intelligence
+
+One more tool sits outside recon and attack: it never touches a target, it
+answers questions about CVEs. It powers the [Vuln Intel](/vuln-intel/overview) page.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| [vulnx](https://github.com/projectdiscovery/cvemap) | Vulnerability-intelligence CLI (CVEs, exploits, advisories, affected products). Queries the intel API only, never a target. | ProjectDiscovery cvemap |
+
+## Helpers
+
+Not scanners: the small utilities the tools above lean on.
+
+| Tool | What it does | Source |
+| --- | --- | --- |
+| [gum](https://github.com/charmbracelet/gum) | Terminal UI helper used by D0rkerR3con. | [GitHub](https://github.com/charmbracelet/gum) |
+| [jq](https://github.com/jqlang/jq) | Command-line JSON processor used to parse tool output. | [GitHub](https://github.com/jqlang/jq) |
+
+<Tip>
+Every tool here installs, versions and updates from the in-app
+[Tools page](/tools/overview), which checks each installed version against the
+latest release and updates in one click. You never chase a GitHub release by hand.
+</Tip>
