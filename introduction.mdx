@@ -1,32 +1,103 @@
 ---
-title: "Welcome to D0pam1ne"
-description: "The brain's motivation neurotransmitter: one workspace for recon, attacks, OSINT and reporting."
+title: "D0pam1ne Overview"
+description: "The brain's motivation neurotransmitter: one workspace that runs the whole engagement, recon, attacks, OSINT and reporting, with adaptive evasion and a local AI."
 ---
 
-D0pam1ne is a self-hosted penetration-testing workspace that runs the whole engagement in one place: reconnaissance, manual and automated attacks, OSINT, vulnerability intelligence and client-ready reporting. It pairs the open-source **D0pam1ne engine** (the recon and OSINT toolchain) with **D0pam1ne Pro**, the multi-user web application your team works in.
+D0pam1ne is a self-hosted offensive-security workspace that runs the entire engagement in one place: reconnaissance, manual and automated attacks, OSINT, vulnerability intelligence and client-ready reporting. It pairs the open-source **D0pam1ne engine** (a curated recon and OSINT toolchain driven from the CLI) with **D0pam1ne Pro**, the multi-user web application your team works in, and a **local AI** that never leaves your machine.
 
 <Frame caption="The Command Center: every client and project in one view">
-  <img src="/images/dashboard/command-center.webp" alt="The Command Center: every client and project in one view" />
+  <img src="/images/dashboard/command-center.webp" alt="D0pam1ne Command Center" />
 </Frame>
 
-## What D0pam1ne does
+Built by offensive-security practitioners for real engagements, D0pam1ne fuses a fast, modular engine with adaptive evasion and AI-assisted triage, so a tester can take a target from first scope to a signed report without stitching twenty tools together by hand.
 
-- **Recon** maps the attack surface with a curated toolchain, with adjustable pacing and an **Evasive Mode** that paces requests and can route egress through Tor.
-- **Manual and Automated Attacks** take recon's findings and run the right tools against each in-scope target, filing what they turn up.
-- **OSINT** gathers public exposure: ASNs, people and emails, exposed assets, dorks, breach and infostealer data.
-- **Reporting** turns verified findings into a branded PDF, an interactive HTML report, Markdown, JSON or Word.
-- **Local AI** runs on your machine via Ollama: no cloud, no account, no telemetry.
+## Key components
+
+<CardGroup cols={3}>
+  <Card title="The engine" icon="terminal">
+    The open-source core. A single registry drives the recon and OSINT toolchain, phase by phase, from subdomains and ports to live web, crawling, content discovery, parameters and secrets. Driven by the `d0pam1ne` CLI, or by Pro.
+  </Card>
+  <Card title="D0pam1ne Pro" icon="browser">
+    The self-hosted web app: the War Room where recon, Manual and Automated Attacks, OSINT, Project Data, triage and reporting live. Multi-user, role-based, 2FA, with everything on infrastructure you control.
+  </Card>
+  <Card title="Local AI" icon="microchip">
+    An on-device model run by Ollama. Triage, report drafting and the Ask AI assistant run locally: no cloud, no account, no telemetry. Your project data never leaves the machine.
+  </Card>
+</CardGroup>
+
+## The pipeline
+
+Every engagement moves through the same pipeline. Each stage feeds the next, and everything lands in one project.
+
+<Steps>
+  <Step title="Scope">
+    Define the client and what is in scope. Recon and attacks act only inside it, and anything out of scope is logged, never probed. See [Client and scope](/concepts/scope).
+  </Step>
+  <Step title="Recon">
+    The engine maps the live attack surface: subdomains, DNS, ports, services, live web, URLs, content, parameters and secrets, with [profiles](/recon/overview) for speed or stealth and an adaptive [Evasive Mode](/recon/evasive-mode).
+  </Step>
+  <Step title="OSINT">
+    Map public exposure before you touch the target: ASNs, people and emails, exposed assets, dorks, email-security posture, breach and infostealer data. See [OSINT](/osint/overview).
+  </Step>
+  <Step title="Project Data">
+    Everything recon and OSINT find lands in [Project Data](/data/hosts-and-services): hosts and services, the [attack-surface graph](/data/attack-surface), URLs, technologies, secrets and the [traffic log](/data/traffic).
+  </Step>
+  <Step title="Attack">
+    [Manual](/attacks/manual-attacks) and [Automated](/attacks/automated-attacks) attacks take recon's results as their targets and run the right tools per category, filing findings as they go.
+  </Step>
+  <Step title="Needs Review">
+    Findings flow into [Issues](/data/issues), where AI triage suggests a verdict and you confirm, edit or reject. Only verified issues reach the client.
+  </Step>
+  <Step title="Report">
+    Turn verified findings into a branded [PDF](/reporting/pdf-report), [interactive HTML](/reporting/interactive-report), Markdown, JSON or Word, then [retest](/reporting/retest) and show what was fixed.
+  </Step>
+</Steps>
+
+## What sets it apart
+
+<CardGroup cols={2}>
+  <Card title="Adaptive Evasive Mode" icon="user-ninja" href="/recon/evasive-mode">
+    Not a fixed delay. D0pam1ne paces requests against how the target actually responds, backing off on rate-limiting and blocks, and can route supported tools through Tor with exit-IP rotation so no single address draws attention.
+  </Card>
+  <Card title="Recon that feeds attacks" icon="diagram-project" href="/attacks/automated-attacks">
+    Attacks are not a separate scan. Each category reads the recon signal that justifies it and builds its in-scope target lists automatically, so the right tools run against the right hosts.
+  </Card>
+  <Card title="Private by design" icon="lock" href="/ai/local-ai">
+    The AI runs on your machine via Ollama. No cloud model, no account, no telemetry, and D0pam1ne refuses any AI endpoint that is not local.
+  </Card>
+  <Card title="Client-ready reporting" icon="file-lines" href="/reporting/report-builder">
+    One branded house design across PDF and interactive HTML, with a full per-finding anatomy (risk, impact, attacker view, evidence, remediation) and a matching retest report.
+  </Card>
+</CardGroup>
 
 ## Editions
 
-D0pam1ne Pro ships as the standard licensed build and a **Founder Edition** (Black Hat Ethical Hacking's in-house build), which unlocks extras such as Word report export. This documentation covers both; Founder-only features are called out where they appear.
+<CardGroup cols={2}>
+  <Card title="Standard" icon="circle-check">
+    The licensed build: the full recon, attack, OSINT, triage and reporting workflow for your team.
+  </Card>
+  <Card title="Founder Edition" icon="crown">
+    Black Hat Ethical Hacking's in-house build, which unlocks extras such as Word (.docx) report export. Founder-only features are marked throughout these docs.
+  </Card>
+</CardGroup>
 
-<Note>D0pam1ne runs entirely on infrastructure you control. Keep the port firewalled to trusted addresses, and require login and 2FA on every network interface.</Note>
+## Where to go next
+
+| You want to... | Go to |
+| --- | --- |
+| Install on Kali or macOS | [Installation](/getting-started/installation) |
+| Sign in and set up your team | [First login](/getting-started/first-login) |
+| Run your first recon | [Recon overview](/recon/overview) |
+| Stay quiet and avoid blocks | [Evasive Mode](/recon/evasive-mode) |
+| Attack what recon found | [Automated Attacks](/attacks/automated-attacks) |
+| Produce a client report | [Report Builder](/reporting/report-builder) |
+
+<Note>D0pam1ne runs entirely on infrastructure you control. Keep the port firewalled to trusted addresses, and require login and 2FA on every network interface. See the [security notes](/getting-started/installation#security) before exposing it.</Note>
 
 ## Who builds D0pam1ne
 
 D0pam1ne is coded by **Chris "SaintDruG" Abou-Chabké**, Founder and Chief Hacking Officer at **Black Hat Ethical Hacking**.
 
 <Card title="Black Hat Ethical Hacking" icon="shield-halved" href="https://www.blackhatethicalhacking.com">
-  Offensive security solutions, vulnerability assessments and digital forensics. Visit blackhatethicalhacking.com.
+  Offensive security solutions, vulnerability assessments and digital forensics. Visit blackhatethicalhacking.com, or [contact the team](https://www.blackhatethicalhacking.com/contact_us).
 </Card>

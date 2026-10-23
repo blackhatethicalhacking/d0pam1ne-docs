@@ -121,13 +121,38 @@
           }
         ]
       }
-    ]
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Contact Us",
+          "href": "https://www.blackhatethicalhacking.com/contact_us",
+          "icon": "envelope"
+        },
+        {
+          "anchor": "BHEH Website",
+          "href": "https://www.blackhatethicalhacking.com",
+          "icon": "globe"
+        },
+        {
+          "anchor": "Support",
+          "href": "https://support.blackhatethicalhacking.com",
+          "icon": "life-ring"
+        }
+      ]
+    }
   },
   "logo": {
     "light": "/images/logo.gif",
     "dark": "/images/logo.gif"
   },
   "navbar": {
+    "links": [
+      {
+        "label": "Contact",
+        "href": "https://www.blackhatethicalhacking.com/contact_us"
+      }
+    ],
     "primary": {
       "type": "button",
       "label": "blackhatethicalhacking.com",
