@@ -4,7 +4,7 @@
   "name": "D0pam1ne",
   "colors": {
     "primary": "#4cd964",
-    "light": "#4cd964",
+    "light": "#5be873",
     "dark": "#0b1115"
   },
   "favicon": "/favicon.svg",
@@ -124,20 +124,44 @@
     ]
   },
   "logo": {
-    "light": "/images/logo.svg",
-    "dark": "/images/logo.svg"
+    "light": "/images/logo.gif",
+    "dark": "/images/logo.gif"
   },
   "navbar": {
     "primary": {
       "type": "button",
-      "label": "Black Hat Ethical Hacking",
+      "label": "blackhatethicalhacking.com",
       "href": "https://www.blackhatethicalhacking.com"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/BHEHofficial",
-      "website": "https://www.blackhatethicalhacking.com"
+      "x": "https://twitter.com/secur1ty1samyth",
+      "linkedin": "https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7300505664659877889",
+      "youtube": "https://www.youtube.com/channel/UC7-AsunT7zO-ny5-U8glqkw",
+      "github": "https://github.com/blackhatethicalhacking",
+      "instagram": "https://www.instagram.com/blackhatethicalhacking",
+      "facebook": "https://www.facebook.com/secur1ty1samyth",
+      "discord": "https://discord.gg/GUcTSc7Fbu",
+      "twitch": "https://www.twitch.tv/bheh1337"
+    }
+  },
+  "appearance": {
+    "default": "dark",
+    "strict": true
+  },
+  "background": {
+    "color": {
+      "dark": "#06090b"
+    }
+  },
+  "fonts": {
+    "heading": {
+      "family": "Chakra Petch",
+      "weight": 700
+    },
+    "body": {
+      "family": "IBM Plex Sans"
     }
   }
 }
