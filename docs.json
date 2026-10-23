@@ -96,7 +96,6 @@
               "reporting/report-builder",
               "reporting/interactive-report",
               "reporting/pdf-report",
-              "reporting/word-export",
               "reporting/retest"
             ]
           },

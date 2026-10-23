@@ -1,6 +1,6 @@
 ---
 title: "FAQ"
-description: "Common questions about running D0pam1ne, the engine, the AI, editions and reporting."
+description: "Common questions about running D0pam1ne, the engine, the AI and reporting."
 ---
 
 <AccordionGroup>
@@ -12,9 +12,6 @@ description: "Common questions about running D0pam1ne, the engine, the AI, editi
   </Accordion>
   <Accordion title="What is the difference between the engine and Pro?">
     The engine is the open-source core: the recon and OSINT toolchain, driven from the `d0pam1ne` CLI. D0pam1ne Pro is the multi-user web app on top of it, adding attack orchestration, triage, reporting, team management and the local AI.
-  </Accordion>
-  <Accordion title="What is Founder Edition?">
-    Black Hat Ethical Hacking's in-house build. It unlocks the private BHEH report templates and Word (.docx) export. It is gated by a signed key that ships only in the in-house repo, so it cannot be enabled on a client build.
   </Accordion>
   <Accordion title="Does Evasive Mode make my scan less thorough?">
     No. It scales a profile's pacing down (rates and concurrency) but leaves coverage alone (ports, crawl depth, wordlist sizes). A run gets quieter and gentler, not shallower, and the per-tool timeout is doubled to give the slower pace room.
